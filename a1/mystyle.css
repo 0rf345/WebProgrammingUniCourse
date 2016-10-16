@@ -1,0 +1,56 @@
+
+#header {
+	position:top center;
+	border:20px solid green;
+	text-align:center;
+}
+
+#nav {
+	position:left;
+	border:20px solid red;
+}
+
+#contL {
+	position: center;
+	float: left;
+	width: 60%;
+	background-color: yellow;
+}
+
+#article {
+	text-align: center;
+	background-color: orange;
+	align: center;
+	position: relative;
+	left: 10%;
+	width: 80%;
+	float: top;
+}
+
+#section {
+	float: bottom;
+	background-color: blue;
+	text-align: center;
+	align: center;
+	position: relative;
+	left: 10%;
+	width: 80%;
+}
+
+#aside {
+	position: center;
+	float: right;
+	text-align: center;
+	width: 40%;
+	background-color: pink;
+}
+
+#footer {
+	width: 100%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	background-color: green;
+}
