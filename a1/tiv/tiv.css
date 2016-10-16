@@ -36,3 +36,12 @@
 	position:top center;
 	text-align:center;
 }
+
+.test {
+	display: none;
+}
+
+.test:hover {
+	z-index: 100;
+	display: block;
+}
