@@ -54,8 +54,25 @@ h1 {
 	width: 100%;
 	position: absolute;
 	right: 0;
-	bottom: 0;
+	bottom: -1000;
 	left: 0;
 	text-align: center;
 	background-color: blue;
+}
+
+table {
+	text-align: center;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #d0c0cd;
 }
