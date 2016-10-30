@@ -8,7 +8,21 @@ var TIV3285 = function() {
 		loadImages: function() {
 			files.loadedImages = document.getElementById("images").files;
 		},
-		showloadedImages: function() {
+		showloadedImages: function(elemID) {
+			if(typeof files.loadedImages.length == "undefined") {
+				var ref = document.getElementById(elemID);
+				var res = ref.innerHTML;
+				res = "<p>No Images have been loaded.</p>";
+				res = res + "<p>Press 'Choose Files' to add some files first.</p>";
+				ref.innerHTML = res;
+				value = ref.value;
+				ref.style.fontFamily = 'Impact';
+				ref.style.fontSize = 'xx-large';
+				ref.style.color = 'red';
+				ref.style.textAlign = 'center';
+			}else{
+				document.getElementById(elemID).innerHTML = '';
+			}
 			for (var i = 0; i < files.loadedImages.length; i++) {
 				 var file = files.loadedImages[i];
 				 if (!file.name.match(/\.(jpg|jpeg|png|gif)$/))
