@@ -12,6 +12,10 @@
 	transition: all 0.3s ease-in-out;
 }
 
+img {
+	max-width: 100%;
+}
+
 .tile:hover {
 	-webkit-transform: scale(1.25, 1.25);
 	transform: scale(1.2, 1.2);
