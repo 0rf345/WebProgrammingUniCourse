@@ -4,6 +4,28 @@ var TIV3285 = (function () {
     var files = {
         loadedImages: {}
     };
+
+    function render(file, elemID) {
+        if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+            alert(file.name + " not an image");
+        } else {
+            var reader = new FileReader();
+            var span;
+            var temp;
+            reader.onload = (function (file) {
+                return function (e) {
+                    // Render thumbnail.
+                    span = document.createElement("span");
+                    temp = ["<div class=\"tile\">", "<img src=\"", e.target.result,
+                            "\" title=\"", encodeURI(file.name), "\">", "</div>"];
+                    span.innerHTML = temp.join("");
+                    document.getElementById(elemID).insertBefore(span, null);
+                };
+            }(file));
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(file);
+        }
+    }
     return {
         loadImages: function () {
             files.loadedImages = document.getElementById("images").files;
@@ -21,31 +43,9 @@ var TIV3285 = (function () {
                 ref.style.textAlign = "center";
             } else {
                 document.getElementById(elemID).innerHTML = "";
-            }
-            var file;
-            var reader;
-            var span;
-            var x;
-            var temp;
-            for (x in files.loadedImages) {
-                file = files.loadedImages[x];
-                if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
-                    alert(file.name + " not an image");
-                } else {
-                    reader = new FileReader();
-                    // Closure to capture the file information.
-                    reader.onload = (function (file) {
-                        return function (e) {
-                            // Render thumbnail.
-                            span = document.createElement("span");
-                            temp = ["<img src=\"", e.target.result,
-                                    "\" title=\"", escape(file.name), "\">"];
-                            span.innerHTML = temp.join("");
-                            document.getElementById("list").insertBefore(span, null);
-                        };
-                    }(file));
-                    // Read in the image file as a data URL.
-                    reader.readAsDataURL(file);
+                var i;
+                for (i = 0; i < files.loadedImages.length; i = i + 1) {
+                    render(files.loadedImages[i], elemID);
                 }
             }
         },
