@@ -26,6 +26,7 @@
                 <button id="buttonShow" onclick="TIV3285.showImages('list');">Show me pictures</button>
                 <button id="buttonShow" onclick="TIV3285.showImage(0, 'mpla');">Show me an img</button>
                 <button id="buttonShow" onclick="TIV3285.showImageDetailedExifInfo(0, 'mpla');">ShowMeExif</button>
+                <button id="buttonShow" onclick="TIV3285.showImageDetailedExifWithMap(0,'mpla');">ShowMeMap</button>
             </p>
         </div>
         
@@ -37,6 +38,11 @@
 
         <div class="rSide">
             <span id="mpla"></span>
+            
+            
+            <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADXEQstBcWPHYWGtYV1ofdbwITPo9ZYf0">
+            </script>
         </div>
         
 	</body>
