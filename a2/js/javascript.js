@@ -49,6 +49,34 @@ var TIV3285 = (function () {
                 }
             }
         },
+        showImage: function (index, elemID) {
+            if (files.loadedImages.length === undefined) {
+                // Unpopulated image array
+                var ref2 = document.getElementById(elemID);
+                var res = ref2.innerHTML;
+                res = "<p>No Images have been loaded.</p>";
+                res = res + "<p>Press \"Choose Files\" to add some files first.</p>";
+                ref2.innerHTML = res;
+                ref2.style.fontFamily = "Impact";
+                ref2.style.fontSize = "xx-large";
+                ref2.style.color = "red";
+                ref2.style.textAlign = "center";
+            } else {
+                if (index < files.loadedImages.length - 1) {
+                    // Everything is ok
+                    document.getElementById(elemID).innerHTML = "";
+                    render(files.loadedImages[index], elemID);
+                } else {
+                    // Index out of bounds
+                    var ref3 = document.getElementById(elemID);
+                    ref3.innerHTML = "<p>Index was not in loadedImages.</p>";
+                    ref3.style.fontFamily = "Impact";
+                    ref3.style.fontSize = "xx-large";
+                    ref3.style.color = "red";
+                    ref3.style.textAlign = "center";
+                }
+            }
+        },
         getLoadedImages: function () {
             return files.loadedImages;
         }
