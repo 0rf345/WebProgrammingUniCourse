@@ -1,4 +1,23 @@
 
+function toDecimal(number) {
+    "use strict";
+    return number[0].numerator + number[1].numerator /
+            (60 * number[1].denominator) + number[2].numerator / (3600 * number[2].denominator);
+}
+
+function initMap(latitude, longtitude) {
+    "use strict";
+    var uluru = {lat: latitude, lng: longtitude};
+    var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 4,
+        center: uluru
+    });
+    var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+    });
+}
+
 var TIV3285 = (function () {
     "use strict";
     var files = {
@@ -101,7 +120,6 @@ var TIV3285 = (function () {
                         allMetaDataSpan.style.color = "black";
                         allMetaDataSpan.style.fontSize = "small";
                     });
-                    
                 } else {
                     // Index out of bounds
                     var ref3 = document.getElementById(elemID);
@@ -113,10 +131,33 @@ var TIV3285 = (function () {
                 }
             }
         },
+        showImageDetailedExifWithMap: function (index, elemID) {
+            if (files.loadedImages.length === undefined) {
+                alert("No image loaded yet");
+            } else if (index < files.loadedImages.length - 1) {
+                document.getElementById(elemID).innerHTML = "";
+                var lat = 0;
+                var lon = 0;
+                EXIF.getData(files.loadedImages[index], function () {
+                    var allMetaData = EXIF.getAllTags(this);
+                    var allMetaDataSpan = document.getElementById(elemID);
+                    lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
+                    lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
+                    allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+                    allMetaDataSpan.style.fontFamily = "\"Times New Roman\", Georgia, Serif;";
+                    allMetaDataSpan.style.color = "black";
+                    allMetaDataSpan.style.fontSize = "small";
+                    if (lon && lat) {
+                        allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
+                        initMap(lat, lon);
+                    }
+                });
+            } else {
+                alert("Index out of bounds, please use a smaller index or load more photos.");
+            }
+        },
         getLoadedImages: function () {
             return files.loadedImages;
         }
     };
 }());
-
-
