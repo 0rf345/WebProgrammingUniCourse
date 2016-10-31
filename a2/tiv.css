@@ -37,12 +37,13 @@ img {
 }
 
 .rSide {
-    border: 1px solid red;
     top: 5%;
     position: absolute;
     left: 85%;
+    right: 1%;
     width: 10%;
     text-align: lext;
+    
 }
 
 #header {
@@ -60,9 +61,12 @@ img {
 }	
 
 #buttonsDiv {
+    position: relative;
     text-align: center;
     margin-top: 50;
     margin-bottom: 50;
+    width: 70%;
+    left: 15%;
 }
 
 #buttonShow {
