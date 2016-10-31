@@ -37,8 +37,8 @@ img {
 }
 
 #header {
-	position:top center;
-	text-align:center;
+	position: top center;
+	text-align: center;
 }
 
 .test {
@@ -49,3 +49,14 @@ img {
 	z-index: 100;
 	display: block;
 }	
+
+#buttonsDiv {
+    text-align: center;
+    margin-top: 50;
+    margin-bottom: 50;
+}
+
+#buttonShow {
+    border-radius: 12px;
+    font-size: 180%;
+}
