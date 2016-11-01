@@ -85,6 +85,21 @@ var TIV3285 = (function () {
         }  
     }
     
+    function showMap (index, elemID) {
+        var lat = 0;
+        var lon = 0;
+        EXIF.getData(files.loadedImages[index], function () {
+            var allMetaData = EXIF.getAllTags(this);
+            var allMetaDataSpan = document.getElementById(elemID);
+            lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
+            lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
+            if (lon !== undefined && lat !== undefined) {
+                allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
+                initMap(lat, lon);
+            }
+        });
+    }
+    
     return {
         loadImages: function () {
             files.loadedImages = document.getElementById("images").files;
@@ -142,43 +157,20 @@ var TIV3285 = (function () {
         showImageDetailedExifWithMap: function (index, elemID) {
             if (index < files.loadedImages.length) {
                 showExif(index, elemID);
-                var lat = 0;
-                var lon = 0;
-                EXIF.getData(files.loadedImages[index], function () {
-                    var allMetaData = EXIF.getAllTags(this);
-                    var allMetaDataSpan = document.getElementById(elemID);
-                    lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
-                    lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
-                    if (lon !== undefined && lat !== undefined) {
-                        allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
-                        initMap(lat, lon);
-                    }
-                });
+                showMap(index, elemID);
             }
         },
         expand: function (which) {
             var index = which;
             if (files.fullscreen === 0) {
                 document.getElementById("image" + index).style.maxWidth = "90%";
-                document.getElementById("image" + index).style.width = "90%";
                 document.getElementById("image" + index).style.left = "5%";
                 document.getElementById("image" + index).className = "";
                 
                 // TODO refactor this mess into showMap
                 showExif(index, "info");
-                var lat = 0;
-                var lon = 0;
-                EXIF.getData(files.loadedImages[index], function () {
-                    var allMetaData = EXIF.getAllTags(this);
-                    var allMetaDataSpan = document.getElementById("info");
-                    lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
-                    lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
-                    if (lon !== undefined && lat !== undefined) {
-                        allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
-                        initMap(lat, lon);
-                    }
-                });
-
+                showMap(index, "info");
+                
                 var i;
                 for(i = 0; i < files.loadedImages.length; i += 1) {
                     if(i != index) document.getElementById("image" + i).style.display = "none";
