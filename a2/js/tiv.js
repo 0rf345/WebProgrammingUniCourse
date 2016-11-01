@@ -21,7 +21,8 @@ function initMap(latitude, longtitude) {
 var TIV3285 = (function () {
     "use strict";
     var files = {
-        loadedImages: {}
+        loadedImages: {},
+        fullscreen: 0
     };
 
     function render(file, elemID, index) {
@@ -61,7 +62,7 @@ var TIV3285 = (function () {
             ref2.style.color = "red";
             ref2.style.textAlign = "center";
         } else {
-            if (index < files.loadedImages.length - 1) {
+            if (index < files.loadedImages.length) {
                 // Everything is ok
                 document.getElementById(elemID).innerHTML = "";
                 EXIF.getData(files.loadedImages[index], function () {
@@ -120,7 +121,7 @@ var TIV3285 = (function () {
                 ref2.style.color = "red";
                 ref2.style.textAlign = "center";
             } else {
-                if (index < files.loadedImages.length - 1) {
+                if (index < files.loadedImages.length) {
                     // Everything is ok
                     document.getElementById(elemID).innerHTML = "";
                     render(files.loadedImages[index], elemID, index);
@@ -139,7 +140,7 @@ var TIV3285 = (function () {
             showExif(index, elemID);
         },
         showImageDetailedExifWithMap: function (index, elemID) {
-            if (index < files.loadedImages.length - 1) {
+            if (index < files.loadedImages.length) {
                 showExif(index, elemID);
                 var lat = 0;
                 var lon = 0;
@@ -155,8 +156,45 @@ var TIV3285 = (function () {
                 });
             }
         },
-        expand: function (index) {
-            console.log(index);
+        expand: function (which) {
+            var index = which;
+            if (files.fullscreen === 0) {
+                document.getElementById("image" + index).style.maxWidth = "90%";
+                document.getElementById("image" + index).style.width = "90%";
+                document.getElementById("image" + index).style.left = "5%";
+                document.getElementById("image" + index).className = "";
+                
+                // TODO refactor this mess into showMap
+                showExif(index, "info");
+                var lat = 0;
+                var lon = 0;
+                EXIF.getData(files.loadedImages[index], function () {
+                    var allMetaData = EXIF.getAllTags(this);
+                    var allMetaDataSpan = document.getElementById("info");
+                    lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
+                    lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
+                    if (lon !== undefined && lat !== undefined) {
+                        allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
+                        initMap(lat, lon);
+                    }
+                });
+
+                var i;
+                for(i = 0; i < files.loadedImages.length; i += 1) {
+                    if(i != index) document.getElementById("image" + i).style.display = "none";
+                }
+                files.fullscreen = 1;
+            } else {
+                for(i = 0; i < files.loadedImages.length; i += 1) {
+                    if(i != index) document.getElementById("image" + i).style.display = "inline-block";
+                }
+                document.getElementById("image" + index).style.maxWidth = "";
+                document.getElementById("image" + index).style.width = "";
+                document.getElementById("image" + index).className = "tile";
+                document.getElementById("info").innerHTML = "";
+                files.fullscreen = 0;
+            }
+            
         },
         getLoadedImages: function () {
             return files.loadedImages;
