@@ -4,7 +4,7 @@ function makeMultiFilter(array) {
     var currentArray = array;           // TO COMPLETE!
     return (function arrayFilterer(pred, callback) {
     // If filter not a function return current Array
-    if (! (typeof pred === 'function')) // TO COMPLETE TOGETHER!
+    if (typeof pred !== 'function') // TO COMPLETE TOGETHER!
         return currentArray;            // TO COMPLETE TOGETHER!
     // Filter out things
     // TO COMPLETE!
