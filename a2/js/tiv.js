@@ -24,7 +24,7 @@ var TIV3285 = (function () {
         loadedImages: {}
     };
 
-    function render(file, elemID) {
+    function render(file, elemID, index) {
         if (!file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
             alert(file.name + " not an image");
         } else {
@@ -35,7 +35,9 @@ var TIV3285 = (function () {
                 return function (e) {
                     // Render thumbnail.
                     span = document.createElement("span");
-                    temp = ["<div class=\"tile\">", "<img src=\"", e.target.result,
+                    temp = ["<div class=\"tile\" id=\"image", index, "\"",
+                            " onclick=\"TIV3285.expand(", index, ")\"",
+                            ">", "<img src=\"", e.target.result,
                             "\" title=\"", encodeURI(file.name), "\">", "</div>"];
                     span.innerHTML = temp.join("");
                     document.getElementById(elemID).insertBefore(span, null);
@@ -101,7 +103,7 @@ var TIV3285 = (function () {
                 document.getElementById(elemID).innerHTML = "";
                 var i;
                 for (i = 0; i < files.loadedImages.length; i = i + 1) {
-                    render(files.loadedImages[i], elemID);
+                    render(files.loadedImages[i], elemID, i);
                 }
             }
         },
@@ -121,7 +123,7 @@ var TIV3285 = (function () {
                 if (index < files.loadedImages.length - 1) {
                     // Everything is ok
                     document.getElementById(elemID).innerHTML = "";
-                    render(files.loadedImages[index], elemID);
+                    render(files.loadedImages[index], elemID, index);
                 } else {
                     // Index out of bounds
                     var ref3 = document.getElementById(elemID);
@@ -152,6 +154,9 @@ var TIV3285 = (function () {
                     }
                 });
             }
+        },
+        expand: function (index) {
+            console.log(index);
         },
         getLoadedImages: function () {
             return files.loadedImages;
