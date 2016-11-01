@@ -47,15 +47,39 @@ var TIV3285 = (function () {
     }
     
     function showExif(index, elemID) {
-        document.getElementById(elemID).innerHTML = "";
-            EXIF.getData(files.loadedImages[index], function () {
-                var allMetaData = EXIF.getAllTags(this);
-                var allMetaDataSpan = document.getElementById(elemID);
-                allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-                allMetaDataSpan.style.fontFamily = "\"Times New Roman\", Georgia, Serif;";
-                allMetaDataSpan.style.color = "black";
-                allMetaDataSpan.style.fontSize = "small";
-            });
+        if (files.loadedImages.length === undefined) {
+            // Unpopulated image array
+            var ref2 = document.getElementById(elemID);
+            var res = ref2.innerHTML;
+            res = "<p>No Images have been loaded.</p>";
+            res = res + "<p>Press \"Choose Files\" to add some files first.</p>";
+            ref2.innerHTML = res;
+            ref2.style.fontFamily = "Impact";
+            ref2.style.fontSize = "xx-large";
+            ref2.style.color = "red";
+            ref2.style.textAlign = "center";
+        } else {
+            if (index < files.loadedImages.length - 1) {
+                // Everything is ok
+                document.getElementById(elemID).innerHTML = "";
+                EXIF.getData(files.loadedImages[index], function () {
+                    var allMetaData = EXIF.getAllTags(this);
+                    var allMetaDataSpan = document.getElementById(elemID);
+                    allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+                    allMetaDataSpan.style.fontFamily = "\"Times New Roman\", Georgia, Serif;";
+                    allMetaDataSpan.style.color = "black";
+                    allMetaDataSpan.style.fontSize = "small";
+                });
+            } else {
+                // Index out of bounds
+                var ref3 = document.getElementById(elemID);
+                ref3.innerHTML = "<p>Index was not in loadedImages.</p>";
+                ref3.style.fontFamily = "Impact";
+                ref3.style.fontSize = "xx-large";
+                ref3.style.color = "red";
+                ref3.style.textAlign = "center";
+            }
+        }  
     }
     
     return {
@@ -110,36 +134,10 @@ var TIV3285 = (function () {
             }
         },
         showImageDetailedExifInfo: function (index, elemID) {
-            if (files.loadedImages.length === undefined) {
-                // Unpopulated image array
-                var ref2 = document.getElementById(elemID);
-                var res = ref2.innerHTML;
-                res = "<p>No Images have been loaded.</p>";
-                res = res + "<p>Press \"Choose Files\" to add some files first.</p>";
-                ref2.innerHTML = res;
-                ref2.style.fontFamily = "Impact";
-                ref2.style.fontSize = "xx-large";
-                ref2.style.color = "red";
-                ref2.style.textAlign = "center";
-            } else {
-                if (index < files.loadedImages.length - 1) {
-                    // Everything is ok
-                    showExif(index, elemID);
-                } else {
-                    // Index out of bounds
-                    var ref3 = document.getElementById(elemID);
-                    ref3.innerHTML = "<p>Index was not in loadedImages.</p>";
-                    ref3.style.fontFamily = "Impact";
-                    ref3.style.fontSize = "xx-large";
-                    ref3.style.color = "red";
-                    ref3.style.textAlign = "center";
-                }
-            }
+            showExif(index, elemID);
         },
         showImageDetailedExifWithMap: function (index, elemID) {
-            if (files.loadedImages.length === undefined) {
-                alert("No image loaded yet");
-            } else if (index < files.loadedImages.length - 1) {
+            if (index < files.loadedImages.length - 1) {
                 showExif(index, elemID);
                 var lat = 0;
                 var lon = 0;
@@ -153,8 +151,6 @@ var TIV3285 = (function () {
                         initMap(lat, lon);
                     }
                 });
-            } else {
-                alert("Index out of bounds, please use a smaller index or load more photos.");
             }
         },
         getLoadedImages: function () {
