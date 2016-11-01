@@ -1,0 +1,14 @@
+
+	Everything works as it should.
+In order to ge to detailed image info, click on it.
+To exit, click it again and everything is back where
+it was.
+
+files: 
+	tiv.html	main page 
+	tiv.css 	page style
+	js/tiv.js 	page javascript
+	js/exif.js	js   library 
+	js/a2mff.js	a2   ex2
+(and this one).
+
