@@ -10,7 +10,7 @@ function makeMultiFilter(array) {
         currentArray = currentArray.filter(pred);         // TO COMPLETE!
         // If callback is a function, execute callback
         if (typeof callback === 'function')     // TO COMPLETE TOGETHER!
-            callback(pred);                     // TO COMPLETE TOGETHER!
+            callback(currentArray);             // TO COMPLETE TOGETHER!
         // TO COMPLETE! We have to return something!
     })
 }
