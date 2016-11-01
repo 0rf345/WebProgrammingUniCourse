@@ -7,7 +7,7 @@ function makeMultiFilter(array) {
         if (typeof pred !== 'function')     // TO COMPLETE TOGETHER!
             return currentArray;            // TO COMPLETE TOGETHER!
         // Filter out things
-        currentArray.filter(pred);         // TO COMPLETE!
+        currentArray = currentArray.filter(pred);         // TO COMPLETE!
         // If callback is a function, execute callback
         if (typeof callback === 'function')     // TO COMPLETE TOGETHER!
             callback(pred);                     // TO COMPLETE TOGETHER!
