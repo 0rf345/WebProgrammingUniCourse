@@ -9,9 +9,9 @@ function makeMultiFilter(array) {
     // Filter out things
     // TO COMPLETE!
     // If callback is a function, execute callback
-    // TO COMPLETE TOGETHER!
-    // TO COMPLETE TOGETHER!
-    // TO COMPLETE! We have to return something!
+    if (typeof callback === 'function') {   // TO COMPLETE TOGETHER!
+        callback(pred)                      // TO COMPLETE TOGETHER!
+    }// TO COMPLETE! We have to return something!
     })
 }
 // !!! THE CODE THAT FOLLOWS USES THE makeMultiFilter function
