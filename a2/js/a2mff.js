@@ -3,15 +3,15 @@ function makeMultiFilter(array) {
     var originalArray = array.slice(0); // TO COMPLETE!
     var currentArray = array;           // TO COMPLETE!
     return (function arrayFilterer(pred, callback) {
-    // If filter not a function return current Array
-    if (typeof pred !== 'function') // TO COMPLETE TOGETHER!
-        return currentArray;            // TO COMPLETE TOGETHER!
-    // Filter out things
-    // TO COMPLETE!
-    // If callback is a function, execute callback
-    if (typeof callback === 'function')     // TO COMPLETE TOGETHER!
-        callback(pred)                      // TO COMPLETE TOGETHER!
-    // TO COMPLETE! We have to return something!
+        // If filter not a function return current Array
+        if (typeof pred !== 'function')     // TO COMPLETE TOGETHER!
+            return currentArray;            // TO COMPLETE TOGETHER!
+        // Filter out things
+        // TO COMPLETE!
+        // If callback is a function, execute callback
+        if (typeof callback === 'function')     // TO COMPLETE TOGETHER!
+            callback(pred);                     // TO COMPLETE TOGETHER!
+        // TO COMPLETE! We have to return something!
     })
 }
 // !!! THE CODE THAT FOLLOWS USES THE makeMultiFilter function
