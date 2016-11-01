@@ -11,7 +11,7 @@ function makeMultiFilter(array) {
         // If callback is a function, execute callback
         if (typeof callback === 'function')     // TO COMPLETE TOGETHER!
             callback(currentArray);             // TO COMPLETE TOGETHER!
-        // TO COMPLETE! We have to return something!
+        return arrayFilterer;                   // TO COMPLETE! We have to return something!
     })
 }
 // !!! THE CODE THAT FOLLOWS USES THE makeMultiFilter function
