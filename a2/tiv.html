@@ -7,7 +7,7 @@
 		<meta name = "keywords" lang = "en-us" content = "web programming, CS, CSD, UOC, basic HTML5, basic CSS3, basic javascript">
 		<title>Excercise 02 - csd3285</title>
 		<link rel = "stylesheet" type = "text/css" href = "tiv.css">
-        <script language = "javascript" src = "js/javascript.js"></script>
+        <script language = "javascript" src = "js/tiv.js"></script>
         <script language = "javascript" src = "js/exif.js"></script>
 		</head>
 
@@ -24,9 +24,11 @@
                 onchange="TIV3285.loadImages();" multiple/>
                 </form>
                 <button id="buttonShow" onclick="TIV3285.showImages('list');">Show me pictures</button>
-                <button id="buttonShow" onclick="TIV3285.showImage(0, 'mpla');">Show me an img</button>
-                <button id="buttonShow" onclick="TIV3285.showImageDetailedExifInfo(0, 'mpla');">ShowMeExif</button>
-                <button id="buttonShow" onclick="TIV3285.showImageDetailedExifWithMap(0,'mpla');">ShowMeMap</button>
+                <!--
+                <button id="buttonShow" onclick="TIV3285.showImage(0, 'info');">Show me an img</button>
+                <button id="buttonShow" onclick="TIV3285.showImageDetailedExifInfo(3, 'info');">ShowMeExif</button>
+                <button id="buttonShow" onclick="TIV3285.showImageDetailedExifWithMap(0,'info');">ShowMeMap</button>
+                -->
             </p>
         </div>
         
@@ -37,7 +39,7 @@
         </div>
 
         <div class="rSide">
-            <span id="mpla"></span>
+            <span id="info"></span>
             
             
             <script async defer
