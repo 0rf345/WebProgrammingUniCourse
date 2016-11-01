@@ -78,3 +78,15 @@ img {
     height: 200px;
     width: 100%;
 }
+
+#urlHolder {
+    max-width: inherit;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#urlHolder:hover {
+    overflow: visible;
+}
