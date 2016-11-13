@@ -1,0 +1,24 @@
+@import url(http://fonts.googleapis.com/css?family=Exo:100,200,400);
+
+body {
+    background-image: url("https://upload.wikimedia.org/wikipedia/en/4/44/Sligo_garavogue_river_in_the_evening.jpg"); 
+    height: 100%;
+}
+
+#header {
+    margin-top: 5%; 
+    font-family: 'Exo', Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 40px;
+    text-align: center;
+    color: #F29E20;
+}
+
+#header span {
+    color: #A0A0FF;
+    font-size: 40px;
+    transition: font-size 0.2s;
+}
+
+#header span:hover {
+    font-size: 50px;
+}
