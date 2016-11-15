@@ -75,7 +75,12 @@ public class NewServlet extends HttpServlet {
         o.print("<html><head><title>Echo Request\n</title></head><body>");
         o.print("HTTP Method:"+request.getMethod());
         o.print("<br>URL"+request.getRequestURL().toString());
-        o.print("<br>Query Part:"+request.getQueryString());
+        String usern = request.getParameter("usern");
+        String userp = request.getParameter("userp");
+        
+        
+        o.print("<br>Username: "+usern);
+        o.print("<br>Password: "+userp);
     }
 
     /**

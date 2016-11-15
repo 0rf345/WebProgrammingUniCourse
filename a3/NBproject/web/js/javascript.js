@@ -12,16 +12,16 @@ function loginPOST() {
     var userp = $("#userp").val();
     var xhr = new XMLHttpRequest();
     
-    xhr.open('POST', 'NewServlet');
+    xhr.open('POST', 'NewServlet?usern=' + usern + '&userp=' + userp);
     xhr.onload = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
             //Response was OK
-            alert("SUCCESS");
+            $("#loginForm").after(xhr.responseText);
         }else if(xhr.status !== 200) {
             alert('Request failed with code: '+xhr.status);
         }
     };
     
     xhr.setRequestHeader('ContentType','application/x-www-form-urlencoded');
-    xhr.send('usern='+usern+'&userp='+userp);
+    xhr.send();
 }   
