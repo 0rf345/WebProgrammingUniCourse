@@ -70,7 +70,12 @@ public class NewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html");
+        PrintWriter o = response.getWriter();
+        o.print("<html><head><title>Echo Request\n</title></head><body>");
+        o.print("HTTP Method:"+request.getMethod());
+        o.print("<br>URL"+request.getRequestURL().toString());
+        o.print("<br>Query Part:"+request.getQueryString());
     }
 
     /**
@@ -80,7 +85,7 @@ public class NewServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Supposedly will hold the user info, check creds etc";
     }// </editor-fold>
 
 }
