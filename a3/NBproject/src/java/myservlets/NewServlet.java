@@ -61,13 +61,49 @@ public class NewServlet extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
+     * 
+     * For login:
+     * request 
+     * login: 1
+     * usern: usern
+     * userp: userp
+     * 
+     * response
+     * success: success
+     * 
+     * 
+     * For register:
+     * request
+     * login: 0
+     * usern:   usern   *
+     * userp:   userp   *
+     * email:   email   *
+     * fname:   fname   *
+     * lname:   lname   *
+     * date:    date    * 
+     * sex:     sex
+     * country: country *
+     * town:    town    *
+     * extra:   extra
+     * 
+     * response
+     * success: success
+     * 
+     * 
+     * For username lookup:
+     * request
+     * login: 2
+     * usern: usern
+     * 
+     * response
+     * success: found
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+    @Override 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
