@@ -23,7 +23,23 @@ body {
     color: blue;
 }
 
-#loginForm {
+#form {
     width: 300px;
     margin:0 auto;
+}
+
+p { 
+    display: table-row;  
+}
+
+label { 
+    display: table-cell; 
+}
+	
+input { 
+    display: table-cell; 
+}
+
+input:invalid {
+    border: 2px solid red;
 }
