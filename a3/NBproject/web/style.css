@@ -23,9 +23,16 @@ body {
     color: blue;
 }
 
+#container{
+    position: relative;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #form {
-    width: 300px;
-    margin:0 auto;
+    margin: 0;
 }
 
 p { 
@@ -38,6 +45,10 @@ label {
 	
 input { 
     display: table-cell; 
+}
+
+select {
+    display: table-cell;
 }
 
 input:invalid {
