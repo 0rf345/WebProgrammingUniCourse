@@ -199,7 +199,22 @@ public class NewServlet extends HttpServlet {
             if(extra != null) o.print("<p>Extra: "+extra+"</p>");
             o.print("<br>");
             
-         
+        
+        // Login usern userp
+        }else if(request.getParameter("login").equals("1")){
+            String usern = request.getParameter("usern");
+            String userp = request.getParameter("userp");
+            if(users.containsKey(usern)) {
+                if(users.get(usern).get("userp").equals(userp)) {
+                    success = "1";
+                }else{
+                    success = "2";
+                }
+            }else{
+                success = "3";
+            }
+            o.print(success);
+            
         // Troubleshooting
         }else{
             response.setContentType("text/html"); 

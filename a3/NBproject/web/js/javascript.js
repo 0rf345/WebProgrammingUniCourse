@@ -100,7 +100,24 @@ function loginPOST() {
     xhr.onload = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
             //Response was OK
-            alert(xhr.responseText);
+            if(xhr.responseText === "1") {
+                // Successfully login
+                $("#header").html("");
+                $("#form").html("");
+                $("#form").append("<br><p><h1>You have successfully signed in!</h1></p>");
+                $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
+                <input type='button' value='Usernames' onclick='showUsers();' /></p>");
+            }else if(xhr.responseText === "2") {
+                // Wrong Password
+                alert('Username was not found in DB');
+                document.getElementById("usern").value = "";
+                document.getElementById("userp").value = "";
+            }else if(xhr.responseText === "3") {
+                // Wrong Username
+                alert('Username or password was incorrect');
+                document.getElementById("usern").value = "";
+                document.getElementById("userp").value = "";
+            }
         }else if(xhr.status !== 200) {
             alert('Request failed with code: '+xhr.status);
         }
