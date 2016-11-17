@@ -22,7 +22,7 @@ public class NewServlet extends HttpServlet {
     
     
     Map<String, HashMap<String, String>> users = new HashMap<>();
-    
+    Map<String, String> emails = new HashMap<>();
     /**
      * 
      */
@@ -32,7 +32,7 @@ public class NewServlet extends HttpServlet {
         users.put(a, new HashMap());
         users.get(a).put("usern", a);
         users.get(a).put("userp", "ta@@mouta2");
-        
+        emails.put("n0b0d1@tolabaki.gr", a);
     }
     
     /**
@@ -140,8 +140,17 @@ public class NewServlet extends HttpServlet {
         String success;
         
         
+        // Email lookup
+        if(request.getParameter("login").equals("3")) {
+            response.setContentType("charset=UTF-8");
+            if(users.containsKey(request.getParameter("email"))) {
+                success = "0";
+            }else{
+                success = "1";
+            }
+            o.print(success);
         // Username lookup
-        if(request.getParameter("login").equals("2")) {
+        }else if(request.getParameter("login").equals("2")) {
             response.setContentType("charset=UTF-8");
             if(users.containsKey(request.getParameter("usern"))) {
                 success = "0";
@@ -173,6 +182,8 @@ public class NewServlet extends HttpServlet {
             users.get(usern).put("country", country);
             users.get(usern).put("town", town);
             if(extra != null) users.get(usern).put("extra", extra);
+            
+            emails.put(email, usern);
             
             response.setContentType("text/html");
             o.print("<p>You have successfully registered. You may now log in.</p>");

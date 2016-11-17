@@ -17,19 +17,36 @@ function validateUsername() {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'NewServlet?login=2&usern='+usern);
         xhr.onload = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-            //Response was OK
-            if(xhr.responseText === "0") {
-                alert("Username: "+$("#usern").val()+" is taken, please choose another.");
-                document.getElementById("usern").value = "";
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                //Response was OK
+                if(xhr.responseText === "0") {
+                    alert("Username: "+$("#usern").val()+" is taken, please choose another.");
+                    document.getElementById("usern").value = "";
+                }
+            }else if(xhr.status !== 200) {
+                alert('Request failed with code: '+xhr.status);
             }
-        }else if(xhr.status !== 200) {
-            alert('Request failed with code: '+xhr.status);
-        }
-    };
-    
-    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-    xhr.send();
+        };
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        xhr.send();
+    }
+}
+
+function validateEmail() {
+    if(document.getElementById("email").checkValidity()) {
+        var email = $("#email").val();
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'NewServlet?login=3&email='+email);
+        xhr.onload = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                alert('Email: '+$("#email").val()+' already in database.');
+                document.getElementById("email").value = "";
+            }else if(xhr.status !== 200) {
+                alert('Request failed with code: '+xhr.status);
+            }
+        };
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send();
     }
 }
 
@@ -46,11 +63,11 @@ function registerFormCreate() {
     $("#form").html("");
     // This is the only XSS vulnerable point of code, easily preventable with a better pattern...
     $("#form").append(p+l+"*Username"+el+"<input type='text' id='usern' placeholder='username' pattern='.{8,}' required title='8 or more latin characters' />"+ep);
-    $("#form").append(p+l+"*E-mail"+el+"<input type='email' id='email' placeholder='johndoe@gmail.com' "+epattern+"required title='text(@)text(.)text Can have more (.)' />"+ep);
+    $("#form").append(p+l+"*E-mail"+el+"<input type='email' id='email' placeholder='johndoes@gmail.com' "+epattern+"required title='text(@)text(.)text Can have more (.)' />"+ep);
     $("#form").append(p+l+"*Password"+el+"<input type='password' id='userp' placeholder='password' "+ppattern+"required title='6-10 characters, must contain 1 latin character, a number and a special symbol'/>"+ep);
     $("#form").append(p+l+"*Confirm Password"+el+"<input type='password' id='userpp' placeholder='password' "+ppattern+"required title='match the previous password' />"+ep);
     $("#form").append(p+l+"*FirstName"+el+"<input type='text' id='fname' placeholder='John' pattern='[a-zA-Z]{3,20}' required title='3-20 latin characters' />"+ep);
-    $("#form").append(p+l+"*LastName"+el+"<input type='text' id='lname' placeholder='Doe' pattern='[a-zA-Z]{4,20}' required />"+ep);
+    $("#form").append(p+l+"*LastName"+el+"<input type='text' id='lname' placeholder='Does' pattern='[a-zA-Z]{4,20}' required />"+ep);
     $("#form").append(p+l+"*Birthday"+el+"<input type='date' id='bdate' max='2001-01-01' required />"+ep); // Going with year alone on defining age. The UI format is based on the user's locale.
     $("#form").append(p+"<input type='radio' name='sex' value='NotApplicable' />Not applicable"+ep);
     $("#form").append(p+"<input type='radio' name='sex' value='Male'>Male"+ep);
@@ -62,6 +79,7 @@ function registerFormCreate() {
     $("#form").append(p+"<input type='submit' value='Register' onclick='checkFields();' />"+ep);
     $("#userp").on("change", validatePassword);
     $("#usern").on("change", validateUsername);
+    $("#email").on("change", validateEmail);
 }
 
 function checkFields() {
