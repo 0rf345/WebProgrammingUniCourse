@@ -93,6 +93,13 @@ function checkFields() {
     }
 }
 
+/*
+ * In order to facilitate an XSS attack I inputed a script in any of the fields
+ * that after registration are <script>window.location = 'new_url'</script>
+ * posted on the browser. In order to prevent it from hapenning we only
+ * need to disallow the user from inputing <script>, etc 
+ */
+
 function showUsers() {
     $("#logged").html("");
     
