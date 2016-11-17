@@ -143,7 +143,7 @@ public class NewServlet extends HttpServlet {
         // Email lookup
         if(request.getParameter("login").equals("3")) {
             response.setContentType("charset=UTF-8");
-            if(users.containsKey(request.getParameter("email"))) {
+            if(emails.containsKey(request.getParameter("email"))) {
                 success = "0";
             }else{
                 success = "1";
@@ -214,7 +214,15 @@ public class NewServlet extends HttpServlet {
                 success = "3";
             }
             o.print(success);
-            
+        // Show users;
+        }else if(request.getParameter("login").equals("4")){
+            o.print("<style>");
+            o.print("</style>");
+            o.print("<ul>");
+            for ( String key : users.keySet() ) {
+                o.print("<li><a href=\"#\">"+key+"</a></li>");
+            }
+            o.print("</ul>");
         // Troubleshooting
         }else{
             response.setContentType("text/html"); 

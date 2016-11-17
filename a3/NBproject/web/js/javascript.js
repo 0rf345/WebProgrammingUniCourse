@@ -39,8 +39,10 @@ function validateEmail() {
         xhr.open('POST', 'NewServlet?login=3&email='+email);
         xhr.onload = function() {
             if(xhr.readyState === 4 && xhr.status === 200) {
-                alert('Email: '+$("#email").val()+' already in database.');
-                document.getElementById("email").value = "";
+                if(xhr.responseText === "0") {
+                    alert('Email: '+$("#email").val()+' already in database.');
+                    document.getElementById("email").value = "";
+                }
             }else if(xhr.status !== 200) {
                 alert('Request failed with code: '+xhr.status);
             }
@@ -89,6 +91,24 @@ function checkFields() {
             &&document.getElementById("country").checkValidity() && document.getElementById("bdate").checkValidity()) {
         registerPOST();
     }
+}
+
+function showUsers() {
+    $("#logged").html("");
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'NewServlet?login=4');
+    xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //Response was OK
+            $("#logged").append(xhr.responseText);
+        }else if(xhr.status !== 200) {
+            alert('Request failed with code: '+xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('ContentType','application/x-www-form-urlencoded');
+    xhr.send();    
 }
 
 function loginPOST() {
