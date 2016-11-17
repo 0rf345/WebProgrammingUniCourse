@@ -107,6 +107,7 @@ function loginPOST() {
                 $("#form").append("<br><p><h1>You have successfully signed in!</h1></p>");
                 $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
                 <input type='button' value='Usernames' onclick='showUsers();' /></p>");
+                $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
             }else if(xhr.responseText === "2") {
                 // Wrong Password
                 alert('Username was not found in DB');
