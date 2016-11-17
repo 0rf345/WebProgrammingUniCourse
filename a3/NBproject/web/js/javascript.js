@@ -3,13 +3,34 @@ var p = "<p>";
 var ep= "</p>";
 var l = "<label>";
 var el= "</label>";
+var exclude = "";
 
 function validatePassword(){
-  
   if(document.getElementById("userp").checkValidity()) {
       document.getElementById("userpp").pattern = document.getElementById("userp").value;
-  }
-  
+  } 
+}
+
+function validateUsername() {
+    if(document.getElementById("usern").checkValidity()) {
+        var usern = $("#usern").val();
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'NewServlet?login=2&usern='+usern);
+        xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //Response was OK
+            if(xhr.responseText === "0") {
+                alert("Username: "+$("#usern").val()+" is taken, please choose another.");
+                document.getElementById("usern").value = "";
+            }
+        }else if(xhr.status !== 200) {
+            alert('Request failed with code: '+xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.send();
+    }
 }
 
 function loginFormCreate() {
@@ -29,17 +50,27 @@ function registerFormCreate() {
     $("#form").append(p+l+"*Password"+el+"<input type='password' id='userp' placeholder='password' "+ppattern+"required title='6-10 characters, must contain 1 latin character, a number and a special symbol'/>"+ep);
     $("#form").append(p+l+"*Confirm Password"+el+"<input type='password' id='userpp' placeholder='password' "+ppattern+"required title='match the previous password' />"+ep);
     $("#form").append(p+l+"*FirstName"+el+"<input type='text' id='fname' placeholder='John' pattern='[a-zA-Z]{3,20}' required title='3-20 latin characters' />"+ep);
-    $("#form").append(p+l+"*LastName"+el+"<input type='password' id='lname' placeholder='Doe' pattern='[a-zA-Z]{4,20}' required />"+ep);
+    $("#form").append(p+l+"*LastName"+el+"<input type='text' id='lname' placeholder='Doe' pattern='[a-zA-Z]{4,20}' required />"+ep);
     $("#form").append(p+l+"*Birthday"+el+"<input type='date' id='bdate' max='2001-01-01' required />"+ep); // Going with year alone on defining age. The UI format is based on the user's locale.
-    $("#form").append(p+"<input type='radio' name='sex' value='1' />Not applicable"+ep);
-    $("#form").append(p+"<input type='radio' name='sex' value='2'>Male"+ep);
-    $("#form").append(p+"<input type='radio' name='sex' value='3'>Female"+ep);
+    $("#form").append(p+"<input type='radio' name='sex' value='NotApplicable' />Not applicable"+ep);
+    $("#form").append(p+"<input type='radio' name='sex' value='Male'>Male"+ep);
+    $("#form").append(p+"<input type='radio' name='sex' value='Female'>Female"+ep);
     populateCountries();
     $("#form").append(ep);
     $("#form").append(p+l+"*Town"+el+"<input type='text' id='town' placeholder='Honolulu' required pattern='.{2,50}' title='Must be 2-50 characters long' />"+ep);
     $("#form").append(p+l+"Extra Info"+el+"<textarea rows='10' cols='50' id='extraInfo' placeholder='Lorem ipsum...' maxlength=500 title='Up to 500 characters'></textarea>"+ep);
-    $("#form").append(p+"<input type='submit' value='Register' onclick='registerPOST();' />"+ep);
+    $("#form").append(p+"<input type='submit' value='Register' onclick='checkFields();' />"+ep);
     $("#userp").on("change", validatePassword);
+    $("#usern").on("change", validateUsername);
+}
+
+function checkFields() {
+    if(document.getElementById("usern").checkValidity() && document.getElementById("userp").checkValidity()
+            &&document.getElementById("email").checkValidity() && document.getElementById("fname").checkValidity()
+            &&document.getElementById("lname").checkValidity() && document.getElementById("town").checkValidity()
+            &&document.getElementById("country").checkValidity() && document.getElementById("bdate").checkValidity()) {
+        registerPOST();
+    }
 }
 
 function loginPOST() {
@@ -47,11 +78,11 @@ function loginPOST() {
     var userp = $("#userp").val();
     var xhr = new XMLHttpRequest();
     
-    xhr.open('POST', 'NewServlet?usern=' + usern + '&userp=' + userp);
+    xhr.open('POST', 'NewServlet?login=1&usern=' + usern + '&userp=' + userp);
     xhr.onload = function() {
         if(xhr.readyState === 4 && xhr.status === 200) {
             //Response was OK
-            $("#loginForm").after(xhr.responseText);
+            alert(xhr.responseText);
         }else if(xhr.status !== 200) {
             alert('Request failed with code: '+xhr.status);
         }
@@ -62,6 +93,32 @@ function loginPOST() {
 }   
 
 function registerPOST() {
+    var usern   = $("#usern").val();
+    var userp   = $("#userp").val();
+    var email   = $("#email").val();
+    var fname   = $("#fname").val();
+    var lname   = $("#lname").val();
+    var date    = $("#bdate").val();
+    var sex     = $('input[name="sex"]:checked').val();
+    var country = $("#country").val();
+    var town    = $("#town").val();
+    var extra   = $("#extraInfo").val();
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'NewServlet?login=0&usern='+usern+'&userp='+userp+'&email='
+            +email+'&fname='+fname+'&lname='+lname+'&date='+date+'&sex='+
+            sex+'&country='+country+'&town='+town+'&extra='+extra);
+    xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //Response was OK
+            $("#form").html(xhr.responseText);
+        }else if(xhr.status !== 200) {
+            alert('Request failed with code: '+xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.send();
     
 }
 

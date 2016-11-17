@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  *
@@ -18,6 +19,22 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class NewServlet extends HttpServlet {
 
+    
+    
+    Map<String, HashMap<String, String>> users = new HashMap<>();
+    
+    /**
+     * 
+     */
+    @Override
+    public void init() {
+        String a = "n0b0d1js";
+        users.put(a, new HashMap());
+        users.get(a).put("usern", a);
+        users.get(a).put("userp", "ta@@mouta2");
+        
+    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -64,7 +81,7 @@ public class NewServlet extends HttpServlet {
      * 
      * For login:
      * request 
-     * login: 1
+     * login: "1"
      * usern: usern
      * userp: userp
      * 
@@ -74,7 +91,7 @@ public class NewServlet extends HttpServlet {
      * 
      * For register:
      * request
-     * login: 0
+     * login:   "0"
      * usern:   usern   *
      * userp:   userp   *
      * email:   email   *
@@ -92,7 +109,7 @@ public class NewServlet extends HttpServlet {
      * 
      * For username lookup:
      * request
-     * login: 2
+     * login: "2"
      * usern: usern
      * 
      * response
@@ -106,6 +123,7 @@ public class NewServlet extends HttpServlet {
     @Override 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        /*
         response.setContentType("text/html");
         PrintWriter o = response.getWriter();
         o.print("<html><head><title>Echo Request\n</title></head><body>");
@@ -117,6 +135,68 @@ public class NewServlet extends HttpServlet {
         
         o.print("<br>Username: "+usern);
         o.print("<br>Password: "+userp);
+        */
+        PrintWriter o = response.getWriter();
+        String success;
+        
+        
+        // Username lookup
+        if(request.getParameter("login").equals("2")) {
+            response.setContentType("charset=UTF-8");
+            if(users.containsKey(request.getParameter("usern"))) {
+                success = "0";
+            }else{
+                success = "1";
+            }
+            o.print(success);
+        // Registration
+        }else if(request.getParameter("login").equals("0")) {
+            String usern    = request.getParameter("usern");
+            String userp    = request.getParameter("userp");
+            String email    = request.getParameter("email");
+            String fname    = request.getParameter("fname");
+            String lname    = request.getParameter("lname");
+            String date     = request.getParameter("date");
+            String sex      = request.getParameter("sex");
+            String country  = request.getParameter("country");
+            String town     = request.getParameter("town");
+            String extra    = request.getParameter("extra");
+
+            users.put(usern, new HashMap());
+            users.get(usern).put("usern", usern);
+            users.get(usern).put("userp", userp);
+            users.get(usern).put("email", email);
+            users.get(usern).put("fname", fname);
+            users.get(usern).put("lname", lname);
+            users.get(usern).put("date", date);
+            if(sex != null) users.get(usern).put("sex", sex);
+            users.get(usern).put("country", country);
+            users.get(usern).put("town", town);
+            if(extra != null) users.get(usern).put("extra", extra);
+            
+            response.setContentType("text/html");
+            o.print("<p>You have successfully registered. You may now log in.</p>");
+            o.print("<p>Your info is as follows</p>");
+            o.print("<p>Username: "+usern+"</p>");
+            o.print("<p>E-mail: "+email+"</p>");
+            o.print("<p>First name: "+fname+"</p>");
+            o.print("<p>Last name: "+lname+"</p>");
+            o.print("<p>Date of birth: "+date+"</p>");
+            if(sex != null) o.print("<p>Sex: "+sex+"</p>");
+            o.print("<p>Country: "+country+"</p>");
+            o.print("<p>Town: "+town+"</p>");
+            if(extra != null) o.print("<p>Extra: "+extra+"</p>");
+            o.print("<br>");
+            
+         
+        // Troubleshooting
+        }else{
+            response.setContentType("text/html"); 
+            o.print("<html><head><title>Echo Request\n</title></head><body>");
+            o.print("HTTP Method:"+request.getMethod());
+            o.print("<br>URL"+request.getRequestURL().toString());
+        }
+        
     }
 
     /**
