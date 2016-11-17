@@ -111,6 +111,24 @@ function showUsers() {
     xhr.send();    
 }
 
+function showInfo() {
+    $("#logged").html("");
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'NewServlet?login=5');
+    xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //Response was OK
+            $("#logged").append(xhr.responseText);
+        }else if(xhr.status !== 200) {
+            alert('Request failed with code: '+xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('ContentType','application/x-www-form-urlencoded');
+    xhr.send(); 
+}
+
 function loginPOST() {
     var usern = $("#usern").val();
     var userp = $("#userp").val();

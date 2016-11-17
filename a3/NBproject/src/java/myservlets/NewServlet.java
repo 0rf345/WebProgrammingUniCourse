@@ -23,15 +23,17 @@ public class NewServlet extends HttpServlet {
     
     Map<String, HashMap<String, String>> users = new HashMap<>();
     Map<String, String> emails = new HashMap<>();
+    String user;
     /**
      * 
      */
     @Override
     public void init() {
+        user = "";
         String a = "n0b0d1js";
         users.put(a, new HashMap());
         users.get(a).put("usern", a);
-        users.get(a).put("userp", "ta@@mouta2");
+        users.get(a).put("userp", "1337pass!!");
         emails.put("n0b0d1@tolabaki.gr", a);
     }
     
@@ -198,8 +200,18 @@ public class NewServlet extends HttpServlet {
             o.print("<p>Town: "+town+"</p>");
             if(extra != null) o.print("<p>Extra: "+extra+"</p>");
             o.print("<br>");
-            
         
+        // Show logged in user's info and let them edit
+        }else if(request.getParameter("login").equals("5")){
+            
+            for(String key : users.get(user).keySet()) {
+                String val = users.get(user).get(key);
+                o.print("<label>"+key+"</label><input type='text' id='"+key+"' value='"+val+"'"+
+                        "/><br>");
+            }
+            o.print("<input type='Submit' id='save' value='Save Changes' onclick='save();'>");
+            
+            
         // Login usern userp
         }else if(request.getParameter("login").equals("1")){
             String usern = request.getParameter("usern");
@@ -207,6 +219,7 @@ public class NewServlet extends HttpServlet {
             if(users.containsKey(usern)) {
                 if(users.get(usern).get("userp").equals(userp)) {
                     success = "1";
+                    user = usern;
                 }else{
                     success = "2";
                 }
