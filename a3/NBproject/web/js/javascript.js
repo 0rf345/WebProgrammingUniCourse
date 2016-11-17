@@ -1,3 +1,4 @@
+"use strict";
 // These help with coding the page
 var p = "<p>";
 var ep= "</p>";
@@ -5,30 +6,65 @@ var l = "<label>";
 var el= "</label>";
 var exclude = "";
 
+
+/*
+ * In order to facilitate an XSS attack I inputed a script in any of the fields
+ * that after registration are posted on the browser and have no limitation
+ * on what kind of characters they get. Namely: username, town, extra-info.
+ * In order to prevent it from hapenning we only
+ * need to disallow the user from inputing <script>, etc 
+ */
+
 function validatePassword(){
   if(document.getElementById("userp").checkValidity()) {
       document.getElementById("userpp").pattern = document.getElementById("userp").value;
   } 
 }
 
+function validateTown() {
+    if(document.getElementById("town").checkValidity()) {
+        if(document.getElementById("town").value.includes("<script>")||
+           document.getElementById("town").value.includes("<style>")) {    
+            alert("You are not playing fair. Please do not try to exploit XSS");
+            document.getElementById("town").value = "";
+        }
+    }
+}
+
+function validateExtra() {
+    if(document.getElementById("extraInfo").checkValidity()) {
+        if(document.getElementById("extraInfo").value.includes("<script>")||
+           document.getElementById("extraInfo").value.includes("<style>")) {    
+            alert("You are not playing fair. Please do not try to exploit XSS");
+            document.getElementById("extraInfo").value = "";
+        }
+    }
+}
+
 function validateUsername() {
     if(document.getElementById("usern").checkValidity()) {
-        var usern = $("#usern").val();
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'NewServlet?login=2&usern='+usern);
-        xhr.onload = function() {
-            if(xhr.readyState === 4 && xhr.status === 200) {
-                //Response was OK
-                if(xhr.responseText === "0") {
-                    alert("Username: "+$("#usern").val()+" is taken, please choose another.");
-                    document.getElementById("usern").value = "";
+        if(document.getElementById("usern").value.includes("<script>")||
+           document.getElementById("usern").value.includes("<style>")) {    
+            alert("You are not playing fair. Please do not try to exploit XSS");
+            document.getElementById("usern").value = "";
+        }else{
+            var usern = $("#usern").val();
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'NewServlet?login=2&usern='+usern);
+            xhr.onload = function() {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    //Response was OK
+                    if(xhr.responseText === "0") {
+                        alert("Username: "+$("#usern").val()+" is taken, please choose another.");
+                        document.getElementById("usern").value = "";
+                    }
+                }else if(xhr.status !== 200) {
+                    alert('Request failed with code: '+xhr.status);
                 }
-            }else if(xhr.status !== 200) {
-                alert('Request failed with code: '+xhr.status);
-            }
-        };
-        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        xhr.send();
+            };
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            xhr.send();
+        }
     }
 }
 
@@ -82,6 +118,8 @@ function registerFormCreate() {
     $("#userp").on("change", validatePassword);
     $("#usern").on("change", validateUsername);
     $("#email").on("change", validateEmail);
+    $("#town").on("change", validateTown);
+    $("#extraInfo").on("change", validateExtra);
 }
 
 function checkFields() {
@@ -92,13 +130,6 @@ function checkFields() {
         registerPOST();
     }
 }
-
-/*
- * In order to facilitate an XSS attack I inputed a script in any of the fields
- * that after registration are <script>window.location = 'new_url'</script>
- * posted on the browser. In order to prevent it from hapenning we only
- * need to disallow the user from inputing <script>, etc 
- */
 
 function showUsers() {
     $("#logged").html("");
