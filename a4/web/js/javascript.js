@@ -186,7 +186,12 @@ function loginPOST() {
                 $("#form").html("");
                 $("#form").append("<br><p><h1>You have successfully signed in!</h1></p>");
                 $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
-                <input type='button' value='Usernames' onclick='showUsers();' /></p>");
+                <input type='button' value='Usernames' onclick='showUsers();' /> \
+                <form name=\"uploadForm\"> \
+                <input id=\"images\" type=\"file\" webkitdirectory mozdirectory directory name=\"myFiles\" \
+                onchange=\"TIV3285.loadImages();\" multiple/> \
+                </form> \
+                <button id=\"buttonShow\" onclick=\"TIV3285.showImages('list');\">Show me pictures</button></p>");
                 $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
             }else if(xhr.responseText === "2") {
                 // Wrong Password
