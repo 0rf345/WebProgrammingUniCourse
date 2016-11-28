@@ -180,7 +180,7 @@ public class NewServlet extends HttpServlet {
         // Registration
         }else if(request.getParameter("login").equals("0")) {
             String usern    = request.getParameter("usern");
-            String userp    = request.getParameter("userp");
+            String userp    = hashMD5(request.getParameter("userp"));
             String email    = request.getParameter("email");
             String fname    = request.getParameter("fname");
             String lname    = request.getParameter("lname");
@@ -206,6 +206,8 @@ public class NewServlet extends HttpServlet {
             
             
             User registration = new User(usern, email, userp, fname, lname, date, country, town);
+            if(sex != null) registration.setGender(sex);
+            if(extra != null) registration.setInfo(extra);
             
             try {
                 UserDB.addUser(registration);
@@ -261,13 +263,26 @@ public class NewServlet extends HttpServlet {
             }
         // Show users;
         }else if(request.getParameter("login").equals("4")){
-            o.print("<style>");
-            o.print("</style>");
-            o.print("<ul>");
-            for ( String key : users.keySet() ) {
-                o.print("<li><a href=\"#\">"+key+"</a></li>");
+            List<User> userList = null;
+            try {
+                userList = UserDB.getUsers();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            o.print("</ul>");
+            
+            if(userList == null) {
+                System.err.println("The list is somehow not populated.");
+            }else{
+                
+                o.print("<style>");
+                o.print("</style>");
+                o.print("<ul>");
+
+                for ( User a : userList ) {
+                    o.print("<li><a href=\"#\">"+a.getUserName()+"</a></li>");
+                }
+                o.print("</ul>");
+            }
         // Troubleshooting
         }else{
             response.setContentType("text/html"); 
