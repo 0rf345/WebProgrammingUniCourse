@@ -44,7 +44,7 @@ public class ExampleAPI {
         turing.setEmail("gnirut@csd.uoc.gr");
         UserDB.updateUser(turing);
 
-        System.out.println(UserDB.getUser("turing"));
+        System.out.println("Added default user.\n"+UserDB.getUser("turing"));
 
         UserDB.deleteUser("turing");
 

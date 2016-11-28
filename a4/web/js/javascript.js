@@ -195,12 +195,12 @@ function loginPOST() {
                 $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
             }else if(xhr.responseText === "2") {
                 // Wrong Password
-                alert('Username was not found in DB');
+                alert('Wrond username - password combination');
                 document.getElementById("usern").value = "";
                 document.getElementById("userp").value = "";
             }else if(xhr.responseText === "3") {
                 // Wrong Username
-                alert('Username or password was incorrect');
+                alert('Username not found');
                 document.getElementById("usern").value = "";
                 document.getElementById("userp").value = "";
             }

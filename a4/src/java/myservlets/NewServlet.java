@@ -11,6 +11,13 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.*;
 
+import cs359db.db.UserDB;
+import cs359db.model.User;
+
+import java.security.MessageDigest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author redho
@@ -23,17 +30,38 @@ public class NewServlet extends HttpServlet {
     Map<String, String> emails = new HashMap<>();
     String user;
     
+    public String hashMD5(String a) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(a.getBytes());
+            byte byteData[] = md.digest();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++) {
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        }catch(Exception e) {
+            System.err.println("For whatever reason MD5 failed: " + e.toString());
+            return null;
+        }
+        
+    }
+ 
     /**
      * 
      */
     @Override
     public void init() {
-        user = "";
-        String a = "n0b0d1js";
-        users.put(a, new HashMap());
-        users.get(a).put("usern", a);
-        users.get(a).put("userp", "1337pass!!");
-        emails.put("n0b0d1@tolabaki.gr", a);
+        /*
+        try {
+            
+            // To be populated if need be
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Default user could not be created");
+        }
+        */
     }
     
     /**
@@ -124,19 +152,7 @@ public class NewServlet extends HttpServlet {
     @Override 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*
-        response.setContentType("text/html");
-        PrintWriter o = response.getWriter();
-        o.print("<html><head><title>Echo Request\n</title></head><body>");
-        o.print("HTTP Method:"+request.getMethod());
-        o.print("<br>URL"+request.getRequestURL().toString());
-        String usern = request.getParameter("usern");
-        String userp = request.getParameter("userp");
         
-        
-        o.print("<br>Username: "+usern);
-        o.print("<br>Password: "+userp);
-        */
         PrintWriter o = response.getWriter();
         String success;
         
@@ -173,7 +189,7 @@ public class NewServlet extends HttpServlet {
             String country  = request.getParameter("country");
             String town     = request.getParameter("town");
             String extra    = request.getParameter("extra");
-
+            
             users.put(usern, new HashMap());
             users.get(usern).put("usern", usern);
             users.get(usern).put("userp", userp);
@@ -187,6 +203,17 @@ public class NewServlet extends HttpServlet {
             if(extra != null) users.get(usern).put("extra", extra);
             
             emails.put(email, usern);
+            
+            
+            User registration = new User(usern, email, userp, fname, lname, date, country, town);
+            
+            try {
+                UserDB.addUser(registration);
+                System.out.println("User successfully added to DB: " + UserDB.getUser(usern));
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println("Does this work?");
+            }
             
             response.setContentType("text/html");
             o.print("<p>You have successfully registered. You may now log in.</p>");
@@ -217,18 +244,21 @@ public class NewServlet extends HttpServlet {
         }else if(request.getParameter("login").equals("1")){
             String usern = request.getParameter("usern");
             String userp = request.getParameter("userp");
-            if(users.containsKey(usern)) {
-                if(users.get(usern).get("userp").equals(userp)) {
+            User a;
+            try{
+                a = UserDB.getUser(usern);
+                if(a.getUserName().equals("")) {
+                    success = "3";
+                } else if(a.getPassword().equals(hashMD5(userp))) {
                     success = "1";
                     session.setAttribute("usern", usern);
-                    user = usern;
                 }else{
                     success = "2";
                 }
-            }else{
-                success = "3";
+                o.print(success);
+            }catch(ClassNotFoundException e) {
+                System.err.println("Could not get user: " + e.toString());
             }
-            o.print(success);
         // Show users;
         }else if(request.getParameter("login").equals("4")){
             o.print("<style>");
