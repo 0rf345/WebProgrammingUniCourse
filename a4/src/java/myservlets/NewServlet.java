@@ -161,23 +161,32 @@ public class NewServlet extends HttpServlet {
         
         // Email lookup
         if(request.getParameter("login").equals("3")) {
-            response.setContentType("charset=UTF-8");
-            if(emails.containsKey(request.getParameter("email"))) {
-                success = "0";
-            }else{
-                success = "1";
+            try {
+                response.setContentType("charset=UTF-8");
+                if(UserDB.checkValidEmail(request.getParameter("email"))) {
+                    success = "1";
+                }else{
+                    success = "0";
+                }
+                o.print(success);
+                // Username lookup
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            o.print(success);
         // Username lookup
         }else if(request.getParameter("login").equals("2")) {
-            response.setContentType("charset=UTF-8");
-            if(users.containsKey(request.getParameter("usern"))) {
-                success = "0";
-            }else{
-                success = "1";
+            try {
+                response.setContentType("charset=UTF-8");
+                if(UserDB.checkValidUserName(request.getParameter("usern"))) {
+                    success = "1";
+                }else{
+                    success = "0";
+                }
+                o.print(success);
+                // Registration
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            o.print(success);
-        // Registration
         }else if(request.getParameter("login").equals("0")) {
             String usern    = request.getParameter("usern");
             String userp    = hashMD5(request.getParameter("userp"));
