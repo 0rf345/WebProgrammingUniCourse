@@ -7,10 +7,8 @@ package myservlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.util.*;
 
 /**
@@ -24,6 +22,7 @@ public class NewServlet extends HttpServlet {
     Map<String, HashMap<String, String>> users = new HashMap<>();
     Map<String, String> emails = new HashMap<>();
     String user;
+    
     /**
      * 
      */
@@ -141,6 +140,8 @@ public class NewServlet extends HttpServlet {
         PrintWriter o = response.getWriter();
         String success;
         
+        HttpSession session = request.getSession();
+        
         
         // Email lookup
         if(request.getParameter("login").equals("3")) {
@@ -204,8 +205,8 @@ public class NewServlet extends HttpServlet {
         // Show logged in user's info and let them edit
         }else if(request.getParameter("login").equals("5")){
             
-            for(String key : users.get(user).keySet()) {
-                String val = users.get(user).get(key);
+            for(String key : users.get(session.getAttribute("usern")).keySet()) {
+                String val = users.get(session.getAttribute("usern")).get(key);
                 o.print("<label>"+key+"</label><input type='text' id='"+key+"' value='"+val+"'"+
                         "/><br>");
             }
@@ -219,6 +220,7 @@ public class NewServlet extends HttpServlet {
             if(users.containsKey(usern)) {
                 if(users.get(usern).get("userp").equals(userp)) {
                     success = "1";
+                    session.setAttribute("usern", usern);
                     user = usern;
                 }else{
                     success = "2";
