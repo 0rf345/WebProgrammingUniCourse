@@ -110,7 +110,7 @@ function registerFormCreate() {
     $("#form").append(p+"<input type='radio' name='sex' value='NotApplicable' />Not applicable"+ep);
     $("#form").append(p+"<input type='radio' name='sex' value='Male'>Male"+ep);
     $("#form").append(p+"<input type='radio' name='sex' value='Female'>Female"+ep);
-    populateCountries();
+    populateCountries("#form");
     $("#form").append(ep);
     $("#form").append(p+l+"*Town"+el+"<input type='text' id='town' placeholder='Honolulu' required pattern='.{2,50}' title='Must be 2-50 characters long' />"+ep);
     $("#form").append(p+l+"Extra Info"+el+"<textarea rows='10' cols='50' id='extraInfo' placeholder='Lorem ipsum...' maxlength=500 title='Up to 500 characters'></textarea>"+ep);
@@ -243,8 +243,12 @@ function registerPOST() {
     
 }
 
-function populateCountries() {
-    $("#form").append(p+l+"*Country"+el+"<select id='country'>"+
+function populateButton() {
+    $("#logged").append("<input type='button' value='Save Changes' onclick='saveChanges();'/>");
+}
+
+function populateCountries(where) {
+    $(where).append(p+l+"*Country"+el+"<select id='country'>"+
 "<option value='Greece'>Greece</option>"+
 "<option value='Afganistan'>Afghanistan</option>"+
 "<option value='Albania'>Albania</option>"+

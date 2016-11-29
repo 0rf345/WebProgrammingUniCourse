@@ -13,6 +13,7 @@ import java.util.*;
 
 import cs359db.db.UserDB;
 import cs359db.model.User;
+import cs359db.model.User.Gender;
 
 import java.security.MessageDigest;
 import java.util.logging.Level;
@@ -242,16 +243,51 @@ public class NewServlet extends HttpServlet {
         
         // Show logged in user's info and let them edit
         }else if(request.getParameter("login").equals("5")){
-            
-            for(String key : users.get(session.getAttribute("usern")).keySet()) {
-                String val = users.get(session.getAttribute("usern")).get(key);
-                o.print("<label>"+key+"</label><input type='text' id='"+key+"' value='"+val+"'"+
-                        "/><br>");
+            try {
+                User usr = UserDB.getUser(session.getAttribute("usern").toString());
+                String l = "<label>";
+                String p = "<p>";
+                String el = "</label>";
+                String ep = "</p>";
+                o.print(p+"<h1>Anything you don't wish to change, simply change nothing on it.</h1>"+ep);
+                o.print(p+l+"Username"+el+"<input id='usern' placeholder='"+
+                        usr.getUserName()+"'>"+ep);
+                o.print(p+l+"Email"+el+
+                        "<input id='email' type='email' placeholder='"+usr.getEmail()+
+                        "'pattern='([a-zA-Z0-9]{1,}(\\.*[a-zA-Z0-9]){0,}@[a-zA-Z0-9]{1,}(\\.{1}[a-zA-Z0-9]{1,}){1,})' >"+ep);
+                o.print(p+l+"New Password(Not hidden)"+el+"<input id='userp' placeholder='old password'"+
+                        "pattern='(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?\\x26])[A-Za-z\\d$@$!%*#?\\x26]{6,10}$' >"+ep);
+                o.print(p+l+"First Name"+el+"<input id='fname' value='"+usr.getFirstName()+
+                        "' pattern='[a-zA-Z]{3,20}'>"+ep);
+                o.print(p+l+"Last Name"+el+"<input id='lname' value='"+usr.getLastName()+
+                        "' pattern='[a-zA-Z]{4,20}' >"+ep);
+                o.print(p+l+"Birthday"+el+"<input type='date' id='bdate' value='"+
+                        usr.getBirthDate()+"' max='2001-01-01'>"+ep);
+                String tmpN = "";
+                String tmpF = "";
+                String tmpM = "";
+                if(usr.getGender().equals(Gender.FEMALE)) tmpF = " checked='checked' ";
+                else if(usr.getGender().equals(Gender.MALE)) tmpM = " checked='checked' ";
+                else tmpN =  "checked='checked'";
+                o.print(p+"Not applicable<input type='radio' name='sex' value='NotApplicable'"+tmpN+"/>"+
+                        "\tMale<input type='radio' name='sex' value='Male'" +tmpM+">"+
+                        "\tFemale<input type='radio' name='sex' value='Female' "+tmpF+">"+ep);
+                o.print("<script>populateCountries('#logged');"
+                        + "populateButton();</script>");
+                o.print(ep);
+                o.print(p+l+"Town"+el+"<input id='town' placeholder='"+usr.getTown()+
+                        "' pattern='.{2,50}' title='Must be 2-50 characters long' />"+ep);
+                o.print(p+l+"Extra Info"+el+"<textarea rows='10' cols='50' id='extraInfo' "+
+                        "placeholder='"+usr.getInfo()+"' maxlength=500 title='Up to 500 characters'></textarea>"+ep);
+                
+                o.print("<script>$(\"#usern\").on(\"change\", validateUsername);\n" +
+"               $(\"#email\").on(\"change\", validateEmail);\n" +
+"               $(\"#town\").on(\"change\", validateTown);\n" +
+"               $(\"#extraInfo\").on(\"change\", validateExtra);</script>");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            o.print("<input type='Submit' id='save' value='Save Changes' onclick='save();'>");
-            
-            
-        // Login usern userp
+        // Login usern userp    
         }else if(request.getParameter("login").equals("1")){
             String usern = request.getParameter("usern");
             String userp = request.getParameter("userp");
