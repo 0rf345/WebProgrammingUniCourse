@@ -138,7 +138,8 @@ function registerFormCreate() {
     // This is the only XSS vulnerable point of code, easily preventable with a better pattern...
     $("#form").append(p+l+"*Username"+el+"<input type='text' id='usern' placeholder='username' pattern='.{8,}' required title='8 or more latin characters' />"+ep);
     $("#form").append(p+l+"*E-mail"+el+"<input type='email' id='email' placeholder='johndoes@gmail.com' "+epattern+"required title='text(@)text(.)text Can have more (.)' />"+ep);
-    $("#form").append(p+l+"*Password"+el+"<input type='password' id='userp' placeholder='password' "+ppattern+"required title='6-10 characters, must contain 1 latin character, a number and a special symbol'/>"+ep);
+    $("#form").append(p+l+"*Password"+el+"<input type='password' id='userp' placeholder='password' "+ppattern+"required title='6-10 characters, must contain 1 latin character, a number and a special symbol'/>"+
+            "<button id='toggler' onclick='togglePassword();'>Show</button>"+ep);
     $("#form").append(p+l+"*Confirm Password"+el+"<input type='password' id='userpp' placeholder='password' "+ppattern+"required title='match the previous password' />"+ep);
     $("#form").append(p+l+"*FirstName"+el+"<input type='text' id='fname' placeholder='John' pattern='[a-zA-Z]{3,20}' required title='3-20 latin characters' />"+ep);
     $("#form").append(p+l+"*LastName"+el+"<input type='text' id='lname' placeholder='Does' pattern='[a-zA-Z]{4,20}' required title='4-20 latin characters' />"+ep);
