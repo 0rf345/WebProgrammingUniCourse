@@ -251,16 +251,18 @@ public class NewServlet extends HttpServlet {
                 String ep = "</p>";
                 o.print(p+"<h1>Anything you don't wish to change, simply change nothing on it.</h1>"+ep);
                 o.print(p+l+"Username"+el+"<input id='usern' placeholder='"+
-                        usr.getUserName()+"'>"+ep);
+                        usr.getUserName()+"' pattern='.{8,}' title='8 or more latin characters'>"+ep);
                 o.print(p+l+"Email"+el+
                         "<input id='email' type='email' placeholder='"+usr.getEmail()+
-                        "'pattern='([a-zA-Z0-9]{1,}(\\.*[a-zA-Z0-9]){0,}@[a-zA-Z0-9]{1,}(\\.{1}[a-zA-Z0-9]{1,}){1,})' >"+ep);
-                o.print(p+l+"New Password(Not hidden)"+el+"<input id='userp' placeholder='old password'"+
-                        "pattern='(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?\\x26])[A-Za-z\\d$@$!%*#?\\x26]{6,10}$' >"+ep);
+                        "'pattern='([a-zA-Z0-9]{1,}(\\.*[a-zA-Z0-9]){0,}@[a-zA-Z0-9]{1,}(\\.{1}[a-zA-Z0-9]{1,}){1,})' "
+                                + "title='text(@)text(.)text Can have more (.)'>"+ep);
+                o.print(p+l+"New Password(Not hidden)"+el+"<input id='userp' placeholder='New password'"+
+                        "pattern='(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?\\x26])[A-Za-z\\d$@$!%*#?\\x26]{6,10}$' "
+                        + "title='6-10 characters, must contain 1 latin character, a number and a special symbol'>"+ep);
                 o.print(p+l+"First Name"+el+"<input id='fname' value='"+usr.getFirstName()+
-                        "' pattern='[a-zA-Z]{3,20}'>"+ep);
+                        "' pattern='[a-zA-Z]{3,20}' title='3-20 latin characters'>"+ep);
                 o.print(p+l+"Last Name"+el+"<input id='lname' value='"+usr.getLastName()+
-                        "' pattern='[a-zA-Z]{4,20}' >"+ep);
+                        "' pattern='[a-zA-Z]{4,20}' title='4-20 latin characters'>"+ep);
                 o.print(p+l+"Birthday"+el+"<input type='date' id='bdate' value='"+
                         usr.getBirthDate()+"' max='2001-01-01'>"+ep);
                 String tmpN = "";

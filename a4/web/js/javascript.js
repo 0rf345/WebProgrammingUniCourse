@@ -105,7 +105,7 @@ function registerFormCreate() {
     $("#form").append(p+l+"*Password"+el+"<input type='password' id='userp' placeholder='password' "+ppattern+"required title='6-10 characters, must contain 1 latin character, a number and a special symbol'/>"+ep);
     $("#form").append(p+l+"*Confirm Password"+el+"<input type='password' id='userpp' placeholder='password' "+ppattern+"required title='match the previous password' />"+ep);
     $("#form").append(p+l+"*FirstName"+el+"<input type='text' id='fname' placeholder='John' pattern='[a-zA-Z]{3,20}' required title='3-20 latin characters' />"+ep);
-    $("#form").append(p+l+"*LastName"+el+"<input type='text' id='lname' placeholder='Does' pattern='[a-zA-Z]{4,20}' required />"+ep);
+    $("#form").append(p+l+"*LastName"+el+"<input type='text' id='lname' placeholder='Does' pattern='[a-zA-Z]{4,20}' required title='4-20 latin characters' />"+ep);
     $("#form").append(p+l+"*Birthday"+el+"<input type='date' id='bdate' max='2001-01-01' required />"+ep); // Going with year alone on defining age. The UI format is based on the user's locale.
     $("#form").append(p+"<input type='radio' name='sex' value='NotApplicable' />Not applicable"+ep);
     $("#form").append(p+"<input type='radio' name='sex' value='Male'>Male"+ep);
@@ -246,6 +246,44 @@ function registerPOST() {
 }
 
 function saveChanges() {
+    
+    if(!document.getElementById("usern").checkValidity()) {
+        alert("Username invalid");
+        return;
+    }
+    if(!document.getElementById("userp").checkValidity()) {
+        alert("Password invalid");
+        return;
+    }
+    if(!document.getElementById("email").checkValidity()) {
+        alert("Email invalid");
+        return;
+    }
+    if(!document.getElementById("fname").checkValidity()) {
+        alert("First name invalid");
+        return;
+    }
+    if(!document.getElementById("lname").checkValidity()) {
+        alert("Last name invalid");
+        return;
+    }
+    if(!document.getElementById("bdate").checkValidity()) {
+        alert("Birthday invalid");
+        return;
+    }
+    if(!document.getElementById("country").checkValidity()) {
+        alert("Country invalid");
+        return;
+    }
+    if(!document.getElementById("town").checkValidity()) {
+        alert("Town invalid");
+        return;
+    }
+    if(!document.getElementById("extraInfo").checkValidity()) {
+        alert("Extra info invalid");
+        return;
+    }
+    
     var usern   = $("#usern").val();
     var userp   = $("#userp").val();
     var email   = $("#email").val();
