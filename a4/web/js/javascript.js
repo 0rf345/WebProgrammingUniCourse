@@ -136,6 +136,7 @@ function checkFields() {
 }
 
 function showUsers() {
+    $("#welcome").html("");
     $("#logged").html("");
     
     var xhr = new XMLHttpRequest();
@@ -154,6 +155,7 @@ function showUsers() {
 }
 
 function showInfo() {
+    $("#welcome").html("");
     $("#logged").html("");
     
     var xhr = new XMLHttpRequest();
@@ -184,7 +186,7 @@ function loginPOST() {
                 // Successfully login
                 $("#header").html("");
                 $("#form").html("");
-                $("#form").append("<br><p><h1>You have successfully signed in!</h1></p>");
+                $("#form").append("<br><p id='welcome'><h1>You have successfully signed in!</h1></p>");
                 $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
                 <input type='button' value='Usernames' onclick='showUsers();' /> \
                 <form name=\"uploadForm\"> \
@@ -243,12 +245,67 @@ function registerPOST() {
     
 }
 
+function saveChanges() {
+    var usern   = $("#usern").val();
+    var userp   = $("#userp").val();
+    var email   = $("#email").val();
+    var fname   = $("#fname").val();
+    var lname   = $("#lname").val();
+    var date    = $("#bdate").val();
+    var sex     = $('input[name="sex"]:checked').val();
+    var country = $("#country").val();
+    var town    = $("#town").val();
+    var extra   = $("#extraInfo").val();
+    
+    var usernn = "";
+    var userpp = "";
+    var emaill = "";
+    var fnamee = "";
+    var lnamee = "";
+    var datee = "";
+    var sexx = "";
+    var countryy = "";
+    var townn = "";
+    var extraa = "";
+    
+    if(usern !== "") usernn = "&usern=";
+    if(userp !== "") userpp = "&userp=";
+    if(email !== "") emaill = "&email=";
+    if(fname !== "") fnamee = "&fname=";
+    if(lname !== "") lnamee = "&lname=";
+    if(date  !== "") datee  = "&date=";
+    if(sex   !== "") sexx   = "&sex=";
+    if(country !== "") countryy= "&country=";
+    if(town  !== "") townn  = "&town=";
+    if(extra !== "") extraa = "&extra=";
+    
+    
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'NewServlet?login=6'+usernn+usern+userpp+userp+emaill+
+            email+fnamee+fname+lnamee+lname+datee+date+sexx+
+            sex+countryy+country+townn+town+extraa+extra);
+        xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //Response was OK
+            $("#logged").html(xhr.responseText);
+        }else if(xhr.status !== 200) {
+            alert('Request failed with code: '+xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.send();
+}
+
 function populateButton() {
     $("#logged").append("<input type='button' value='Save Changes' onclick='saveChanges();'/>");
 }
 
 function populateCountries(where) {
-    $(where).append(p+l+"*Country"+el+"<select id='country'>"+
+    var tmp = "";
+    if(where === "#form") tmp = "*";
+    $(where).append(p+l+tmp+"Country"+el+"<select id='country'>"+
 "<option value='Greece'>Greece</option>"+
 "<option value='Afganistan'>Afghanistan</option>"+
 "<option value='Albania'>Albania</option>"+

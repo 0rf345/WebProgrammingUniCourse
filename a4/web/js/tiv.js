@@ -112,6 +112,7 @@ var TIV3285 = (function () {
             files.loadedImages = document.getElementById("images").files;
         },
         showImages: function (elemID) {
+            $("#welcome").html("");
             if (files.loadedImages.length === undefined) {
                 var ref = document.getElementById(elemID);
                 var res = ref.innerHTML;

@@ -293,6 +293,7 @@ public class NewServlet extends HttpServlet {
             String userp = request.getParameter("userp");
             User a;
             try{
+                System.err.println(UserDB.getUser("n0b0d1js2"));
                 a = UserDB.getUser(usern);
                 if(a.getUserName().equals("")) {
                     success = "3";
@@ -327,6 +328,40 @@ public class NewServlet extends HttpServlet {
                     o.print("<li><a href=\"#\">"+a.getUserName()+"</a></li>");
                 }
                 o.print("</ul>");
+            }
+        // Save User Info Changes
+        }else if(request.getParameter("login").equals("6")){
+            String usern    = request.getParameter("usern");
+            String userp    = request.getParameter("userp");
+            String email    = request.getParameter("email");
+            String fname    = request.getParameter("fname");
+            String lname    = request.getParameter("lname");
+            String date     = request.getParameter("date");
+            String sex      = request.getParameter("sex");
+            String country  = request.getParameter("country");
+            String town     = request.getParameter("town");
+            String extra    = request.getParameter("extra");
+            
+            try {
+                User tmp = UserDB.getUser(session.getAttribute("usern").toString());
+                
+                
+                if(usern != null) tmp.setUserName(usern);
+                if(userp != null) tmp.setPassword(hashMD5(userp));
+                if(email != null) tmp.setEmail(email);
+                if(fname != null) tmp.setFirstName(fname);
+                if(lname != null) tmp.setLastName(lname);
+                if(date != null) tmp.setBirthDate(date);
+                if(sex != null) tmp.setGender(sex);
+                if(country != null) tmp.setCountry(country);
+                if(town != null) tmp.setTown(town);
+                if(extra != null) tmp.setInfo(extra);
+                
+                UserDB.updateUser(tmp);
+                o.print("<p><h1>Your Info has been updated successfully</h1></p>");
+                
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         // Troubleshooting
         }else{
