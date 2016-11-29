@@ -1,3 +1,7 @@
+"use strict";
+
+var photos = new Array();
+var pindex = 0;
 
 function toDecimal(number) {
     "use strict";
@@ -29,7 +33,10 @@ var TIV3285 = (function () {
     function render(file, elemID, index) {
         if (!file.name.match(/\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$/)) {
             alert(file.name + " not an image");
+            
         } else {
+            photos[pindex] = index;
+            pindex = pindex + 1;
             var reader = new FileReader();
             var span;
             var temp;
@@ -37,9 +44,9 @@ var TIV3285 = (function () {
                 return function (e) {
                     // Render thumbnail.
                     span = document.createElement("span");
-                    temp = ["<div class=\"tile\" id=\"image", index, "\"", // create handle for clicking
+                    temp = ["<div class=\"tile\" id=\"image0", index, "\"", // create handle for clicking
                             " onclick=\"TIV3285.expand(", index, ")\"",    // onclick event handler
-                            ">", "<img id=\"image0", index, "\"", "src=\"", e.target.result, // handle for getting url NOT USED
+                            ">", "<img id=\"image", index, "\"", "src=\"", e.target.result, // handle for getting url NOT USED
                             "\" title=\"", encodeURI(file.name), "\">", "</div>"];
                     files.loadedUrls[index] = e.target.result;
                     span.innerHTML = temp.join("");
@@ -66,15 +73,17 @@ var TIV3285 = (function () {
         } else {
             if (index < files.loadedImages.length) {
                 // Everything is ok
-                document.getElementById(elemID).innerHTML = "";
-                EXIF.getData(files.loadedImages[index], function () {
-                    var allMetaData = EXIF.getAllTags(this);
-                    var allMetaDataSpan = document.getElementById(elemID);
-                    allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-                    allMetaDataSpan.style.fontFamily = "\"Times New Roman\", Georgia, Serif;";
-                    allMetaDataSpan.style.color = "black";
-                    allMetaDataSpan.style.fontSize = "small";
-                });
+                if(files.loadedImages[index].name.match(/\.(jpg|jpeg|JPG|JPEG)$/)) {
+                    document.getElementById(elemID).innerHTML = "";
+                    EXIF.getData(files.loadedImages[index], function () {
+                        var allMetaData = EXIF.getAllTags(this);
+                        var allMetaDataSpan = document.getElementById(elemID);
+                        allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+                        allMetaDataSpan.style.fontFamily = "\"Times New Roman\", Georgia, Serif;";
+                        allMetaDataSpan.style.color = "black";
+                        allMetaDataSpan.style.fontSize = "small";
+                    });
+                }
             } else {
                 // Index out of bounds
                 var ref3 = document.getElementById(elemID);
@@ -91,20 +100,22 @@ var TIV3285 = (function () {
     function showMap (index, elemID) {
         var lat = 0;
         var lon = 0;
-        EXIF.getData(files.loadedImages[index], function () {
-            var allMetaData = EXIF.getAllTags(this);
-            var allMetaDataSpan = document.getElementById(elemID);
-            if(EXIF.getTag(this, "GPSLatitude")) {
-                lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
-            }
-            if(EXIF.getTag(this, "GPSLongitude")) {
-                lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
-            }
-            if (lon !== 0 && lat !== 0) {
-                allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
-                initMap(lat, lon);
-            }
-        });
+        if(files.loadedImages[index].name.match(/\.(jpg|jpeg|JPG|JPEG)$/)) {
+            EXIF.getData(files.loadedImages[index], function () {
+                var allMetaData = EXIF.getAllTags(this);
+                var allMetaDataSpan = document.getElementById(elemID);
+                if(EXIF.getTag(this, "GPSLatitude")) {
+                    lat = toDecimal(EXIF.getTag(this, "GPSLatitude"));
+                }
+                if(EXIF.getTag(this, "GPSLongitude")) {
+                    lon = toDecimal(EXIF.getTag(this, "GPSLongitude"));
+                }
+                if (lon !== 0 && lat !== 0) {
+                    allMetaDataSpan.innerHTML += "<div id=\"map\"></div>";
+                    initMap(lat, lon);
+                }
+            });
+        }
     }
 
     return {
@@ -126,6 +137,8 @@ var TIV3285 = (function () {
             } else {
                 document.getElementById(elemID).innerHTML = "";
                 var i;
+                photos = new Array();
+                pindex = 0;
                 for (i = 0; i < files.loadedImages.length; i = i + 1) {
                     render(files.loadedImages[i], elemID, i);
                 }
@@ -171,32 +184,32 @@ var TIV3285 = (function () {
         expand: function (which) {
             var index = which;
             if (files.fullscreen === 0) {
-                document.getElementById("image" + index).style.maxWidth = "90%";
-                document.getElementById("image" + index).style.left = "5%";
-                document.getElementById("image" + index).className = "";
+                document.getElementById("image0" + index).style.maxWidth = "90%";
+                document.getElementById("image0" + index).style.left = "5%";
+                document.getElementById("image0" + index).className = "";
 
                 showExif(index, "info");
                 showMap(index, "info");
     
                 var i;
-                for(i = 0; i < files.loadedImages.length; i += 1) {
-                    if(i !== index) {
-                        document.getElementById("image" + i).style.display = "none";
+                for(i = 0; i < pindex; i += 1) {
+                    if(photos[i] !== index) {
+                        document.getElementById("image0" + photos[i]).style.display = "none";
                     }
                 }
                 document.getElementById("urlSpace").innerHTML = 
                     "<div id=\"urlHolder\">" + "URL: " + files.loadedUrls[index] + "</div>";
                 files.fullscreen = 1;
             } else {
-                for(i = 0; i < files.loadedImages.length; i += 1) {
-                    if(i !== index) {
-                        document.getElementById("image" + i).style.display = "inline-block";
+                for(i = 0; i < pindex; i += 1) {
+                    if(photos[i] !== index) {
+                        document.getElementById("image0" + photos[i]).style.display = "inline-block";
                     }
                 }
                 document.getElementById("urlHolder").innerHTML = "";
-                document.getElementById("image" + index).style.maxWidth = "";
-                document.getElementById("image" + index).style.width = "";
-                document.getElementById("image" + index).className = "tile";
+                document.getElementById("image0" + index).style.maxWidth = "";
+                document.getElementById("image0" + index).style.width = "";
+                document.getElementById("image0" + index).className = "tile";
                 document.getElementById("info").innerHTML = "";
                 files.fullscreen = 0;
             }
