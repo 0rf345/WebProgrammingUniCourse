@@ -15,12 +15,20 @@ var exclude = "";
  * need to disallow the user from inputing <script>, etc 
  */
 
+/*
+ * Checks that the user passwords on registration match by make the pattern
+ * of the second one the same as the value of the first one when the first one
+ * is valid.
+ */
 function validatePassword(){
   if(document.getElementById("userp").checkValidity()) {
       document.getElementById("userpp").pattern = document.getElementById("userp").value;
   } 
 }
 
+/*
+ * Checks town for XSS attack
+ */
 function validateTown() {
     if(document.getElementById("town").checkValidity()) {
         if(document.getElementById("town").value.includes("<script>")||
@@ -31,6 +39,9 @@ function validateTown() {
     }
 }
 
+/*
+ * Checks extra for XSS attack
+ */
 function validateExtra() {
     if(document.getElementById("extraInfo").checkValidity()) {
         if(document.getElementById("extraInfo").value.includes("<script>")||
@@ -41,6 +52,9 @@ function validateExtra() {
     }
 }
 
+/*
+ * Checks username using the servlet to see if it has been registered before
+ */
 function validateUsername() {
     if(document.getElementById("usern").checkValidity()) {
         if(document.getElementById("usern").value.includes("<script>")||
@@ -68,6 +82,9 @@ function validateUsername() {
     }
 }
 
+/*
+ * Checks email using the servlet to see if it has been registered before
+ */
 function validateEmail() {
     if(document.getElementById("email").checkValidity()) {
         var email = $("#email").val();
@@ -88,6 +105,9 @@ function validateEmail() {
     }
 }
 
+/*
+ * Creates the form so the users can login
+ */
 function loginFormCreate() {
     $("#form").html("");
     $("#form").append(p+l+"Username"+el+"<input type='text' id='usern' placeholder='username' />"+ep);
@@ -95,6 +115,9 @@ function loginFormCreate() {
     $("#form").append("<p><input type='button' value='Login' onclick='loginPOST();' /></p>");
 }
 
+/*
+ * Creates the form so the users can register
+ */
 function registerFormCreate() {
     var ppattern = "pattern='(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?\\x26])[A-Za-z\\d$@$!%*#?\\x26]{6,10}$' ";
     var epattern = "pattern='([a-zA-Z0-9]{1,}(\\.*[a-zA-Z0-9]){0,}@[a-zA-Z0-9]{1,}(\\.{1}[a-zA-Z0-9]{1,}){1,})' ";
@@ -122,6 +145,9 @@ function registerFormCreate() {
     $("#extraInfo").on("change", validateExtra);
 }
 
+/*
+ * Checks thall all register fields are valid to begin the POST to servlet
+ */
 function checkFields() {
     if(document.getElementById("usern").checkValidity() && 
             document.getElementById("userp").checkValidity()&&
@@ -135,6 +161,9 @@ function checkFields() {
     }
 }
 
+/*
+ * Asks servlet for all registered users
+ */
 function showUsers() {
     $("#welcome").html("");
     $("#logged").html("");
@@ -154,6 +183,9 @@ function showUsers() {
     xhr.send();    
 }
 
+/*
+ * Asks servlet for logged in user's info
+ */
 function showInfo() {
     $("#welcome").html("");
     $("#logged").html("");
@@ -173,6 +205,10 @@ function showInfo() {
     xhr.send(); 
 }
 
+/*
+ * Sends the inputed username and password to the server in order to attempt
+ * a login. Logs the user in if successfull, alerts of what hapenned otherwise.
+ */
 function loginPOST() {
     var usern = $("#usern").val();
     var userp = $("#userp").val();
@@ -215,6 +251,9 @@ function loginPOST() {
     xhr.send();
 }   
 
+/*
+ * Gives all the info to the servlet to register a new user
+ */
 function registerPOST() {
     var usern   = $("#usern").val();
     var userp   = $("#userp").val();
@@ -245,6 +284,9 @@ function registerPOST() {
     
 }
 
+/*
+ * Sends new info of user to the servlet so it can update the user's info.
+ */
 function saveChanges() {
     
     if(!document.getElementById("usern").checkValidity()) {
@@ -336,10 +378,16 @@ function saveChanges() {
     xhr.send();
 }
 
+/*
+ * Creates a button for saving user info changes
+ */
 function populateButton() {
     $("#logged").append("<input type='button' value='Save Changes' onclick='saveChanges();'/>");
 }
 
+/*
+ * Populates 'where' with a select form of countries.
+ */
 function populateCountries(where) {
     var tmp = "";
     if(where === "#form") tmp = "*";
