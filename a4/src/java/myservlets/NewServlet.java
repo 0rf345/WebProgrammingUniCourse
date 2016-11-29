@@ -16,6 +16,7 @@ import cs359db.model.User;
 import cs359db.model.User.Gender;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,34 +37,18 @@ public class NewServlet extends HttpServlet {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(a.getBytes());
             byte byteData[] = md.digest();
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < byteData.length; i++) {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString();
-        }catch(Exception e) {
+        }catch(NoSuchAlgorithmException e) {
             System.err.println("For whatever reason MD5 failed: " + e.toString());
             return null;
         }
         
     }
- 
-    /**
-     * 
-     */
-    @Override
-    public void init() {
-        /*
-        try {
-            
-            // To be populated if need be
-            
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("Default user could not be created");
-        }
-        */
-    }
+
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -170,7 +155,6 @@ public class NewServlet extends HttpServlet {
                     success = "0";
                 }
                 o.print(success);
-                // Username lookup
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -184,10 +168,10 @@ public class NewServlet extends HttpServlet {
                     success = "0";
                 }
                 o.print(success);
-                // Registration
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+        // Registration
         }else if(request.getParameter("login").equals("0")) {
             String usern    = request.getParameter("usern");
             String userp    = hashMD5(request.getParameter("userp"));
@@ -199,21 +183,6 @@ public class NewServlet extends HttpServlet {
             String country  = request.getParameter("country");
             String town     = request.getParameter("town");
             String extra    = request.getParameter("extra");
-            
-            users.put(usern, new HashMap());
-            users.get(usern).put("usern", usern);
-            users.get(usern).put("userp", userp);
-            users.get(usern).put("email", email);
-            users.get(usern).put("fname", fname);
-            users.get(usern).put("lname", lname);
-            users.get(usern).put("date", date);
-            if(sex != null) users.get(usern).put("sex", sex);
-            users.get(usern).put("country", country);
-            users.get(usern).put("town", town);
-            if(extra != null) users.get(usern).put("extra", extra);
-            
-            emails.put(email, usern);
-            
             
             User registration = new User(usern, email, userp, fname, lname, date, country, town);
             if(sex != null) registration.setGender(sex);
@@ -346,8 +315,7 @@ public class NewServlet extends HttpServlet {
             
             try {
                 User tmp = UserDB.getUser(session.getAttribute("usern").toString());
-                
-                
+                  
                 if(usern != null) tmp.setUserName(usern);
                 if(userp != null) tmp.setPassword(hashMD5(userp));
                 if(email != null) tmp.setEmail(email);
