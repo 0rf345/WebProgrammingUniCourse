@@ -52,6 +52,19 @@ function validateExtra() {
     }
 }
 
+var hid = 1;
+function togglePassword() {
+    if(hid === 1) {
+        document.getElementById("userp").type = "text";
+        $("#toggler").html("Hide");
+        hid = 0;
+    }else{
+        document.getElementById("userp").type = "password";
+        $("#toggler").html("Show");
+        hid = 1;
+    }
+}
+
 /*
  * Checks username using the servlet to see if it has been registered before
  */
@@ -137,7 +150,7 @@ function registerFormCreate() {
     $("#form").append(ep);
     $("#form").append(p+l+"*Town"+el+"<input type='text' id='town' placeholder='Honolulu' required pattern='.{2,50}' title='Must be 2-50 characters long' />"+ep);
     $("#form").append(p+l+"Extra Info"+el+"<textarea rows='10' cols='50' id='extraInfo' placeholder='Lorem ipsum...' maxlength=500 title='Up to 500 characters'></textarea>"+ep);
-    $("#form").append(p+"<input type='button' value='Register' onclick='checkFields();' />"+ep);
+    $("#form").append(p+"<input type='submit' value='Register' onclick='checkFields();' />"+ep);
     $("#userp").on("change", validatePassword);
     $("#usern").on("change", validateUsername);
     $("#email").on("change", validateEmail);

@@ -268,9 +268,10 @@ public class NewServlet extends HttpServlet {
                         "<input id='email' type='email' placeholder='"+usr.getEmail()+
                         "'pattern='([a-zA-Z0-9]{1,}(\\.*[a-zA-Z0-9]){0,}@[a-zA-Z0-9]{1,}(\\.{1}[a-zA-Z0-9]{1,}){1,})' "
                                 + "title='text(@)text(.)text Can have more (.)'>"+ep);
-                o.print(p+l+"New Password(Not hidden)"+el+"<input id='userp' placeholder='New password'"+
+                o.print(p+l+"New Password"+el+"<input type='password' id='userp' placeholder='New password'"+
                         "pattern='(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?\\x26])[A-Za-z\\d$@$!%*#?\\x26]{6,10}$' "
-                        + "title='6-10 characters, must contain 1 latin character, a number and a special symbol'>"+ep);
+                        + "title='6-10 characters, must contain 1 latin character, a number and a special symbol'>"+
+                        "<button id='toggler' onclick='togglePassword();'>Show</button>" +ep);
                 o.print(p+l+"First Name"+el+"<input id='fname' value='"+usr.getFirstName()+
                         "' pattern='[a-zA-Z]{3,20}' title='3-20 latin characters'>"+ep);
                 o.print(p+l+"Last Name"+el+"<input id='lname' value='"+usr.getLastName()+
