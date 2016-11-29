@@ -27,11 +27,11 @@ import java.util.logging.Logger;
 public class NewServlet extends HttpServlet {
 
     
-    
-    Map<String, HashMap<String, String>> users = new HashMap<>();
-    Map<String, String> emails = new HashMap<>();
-    String user;
-    
+    /**
+     * Returns a String which is the MD5 hash of a
+     * @param a
+     * @return 
+     */
     public String hashMD5(String a) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -129,6 +129,49 @@ public class NewServlet extends HttpServlet {
      * 
      * response
      * success: found
+     * 
+     * 
+     * For email lookup:
+     * request
+     * login: "3"
+     * email: email
+     * 
+     * response
+     * success: found
+     * 
+     * 
+     * For show users:
+     * request
+     * login: "4"
+     * 
+     * response
+     * A page with a list of all registered users
+     * 
+     * 
+     * For show user info
+     * request
+     * login: "5"
+     * 
+     * response
+     * A page with all the logged in user's info and the ability to change them
+     * 
+     * 
+     * For save user info
+     * request
+     * login: "6"
+     * usern:   usern   
+     * userp:   userp   
+     * email:   email   
+     * fname:   fname   
+     * lname:   lname   
+     * date:    date     
+     * sex:     sex
+     * country: country 
+     * town:    town    
+     * extra:   extra
+     * 
+     * response
+     * Saves the non "" data in the User Database
      * 
      * @param request servlet request
      * @param response servlet response
