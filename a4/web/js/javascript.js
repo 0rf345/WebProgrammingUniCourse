@@ -92,7 +92,7 @@ function loginFormCreate() {
     $("#form").html("");
     $("#form").append(p+l+"Username"+el+"<input type='text' id='usern' placeholder='username' />"+ep);
     $("#form").append(p+l+"Password"+el+"<input type='password' id='userp' placeholder='password' />"+ep);
-    $("#form").append("<p><input type='submit' value='Login' onclick='loginPOST();' /></p>");
+    $("#form").append("<p><input type='button' value='Login' onclick='loginPOST();' /></p>");
 }
 
 function registerFormCreate() {
@@ -114,7 +114,7 @@ function registerFormCreate() {
     $("#form").append(ep);
     $("#form").append(p+l+"*Town"+el+"<input type='text' id='town' placeholder='Honolulu' required pattern='.{2,50}' title='Must be 2-50 characters long' />"+ep);
     $("#form").append(p+l+"Extra Info"+el+"<textarea rows='10' cols='50' id='extraInfo' placeholder='Lorem ipsum...' maxlength=500 title='Up to 500 characters'></textarea>"+ep);
-    $("#form").append(p+"<input type='submit' value='Register' onclick='checkFields();' />"+ep);
+    $("#form").append(p+"<input type='button' value='Register' onclick='checkFields();' />"+ep);
     $("#userp").on("change", validatePassword);
     $("#usern").on("change", validateUsername);
     $("#email").on("change", validateEmail);

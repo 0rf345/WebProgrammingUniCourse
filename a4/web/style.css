@@ -88,3 +88,7 @@ li a:hover {
   font-size: 30px;
   background: #f6f6f6;
 }
+
+input[type=button] {
+    cursor: pointer!important;
+}
