@@ -222,7 +222,7 @@ function loginPOST() {
                 // Successfully login
                 $("#header").html("");
                 $("#form").html("");
-                $("#form").append("<br><p id='welcome'><h1>You have successfully signed in!</h1></p>");
+                $("#form").append("<br><p ><h1 id='welcome'>You have successfully signed in!</h1></p>");
                 $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
                 <input type='button' value='Usernames' onclick='showUsers();' /> \
                 <form name=\"uploadForm\"> \
