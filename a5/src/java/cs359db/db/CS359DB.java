@@ -15,12 +15,11 @@ import java.sql.SQLException;
  */
 public class CS359DB {
 
-    private static final String URL = "jdbc:mysql://83.212.108.176";
-    private static final String DATABASE = "csd3285";
+    private static final String URL = "jdbc:mysql://CHECK HOST IN GIT";
+    private static final String DATABASE = "SAME AS USERNAME IN GIT";
     private static final int PORT = 3306;
-    private static final String UNAME = "csd3285";
-    private static final String PASSWD = "A4c8@Sa42P%8";
-
+    private static final String UNAME = "CHECK USERNAME IN GIT";
+    private static final String PASSWD = "CHECK PASSWD IN GIT";
     /**
      * Attempts to establish a database connection Using mysql
        *
@@ -31,7 +30,7 @@ public class CS359DB {
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         return DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE
-                + "?zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", UNAME, PASSWD);
+                + "?zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",                 UNAME, PASSWD);
     }
 
 }
