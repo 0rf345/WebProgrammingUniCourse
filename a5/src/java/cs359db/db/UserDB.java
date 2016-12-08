@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -139,10 +141,13 @@ public class UserDB {
             try (Connection con = CS359DB.getConnection();
                     Statement stmt = con.createStatement()) {
 
+                Date date = new Date();
+                Timestamp timestamp = new Timestamp(date.getTime());
+
                 StringBuilder insQuery = new StringBuilder();
 
                 insQuery.append("INSERT INTO ")
-                        .append(" user (USERNAME, EMAIL, PASSWORD, FIRSTNAME, LASTNAME, BIRTHDATE, GENDER, COUNTRY, TOWN, ADDITIONAL) ")
+                        .append(" user (USERNAME, EMAIL, PASSWORD, FIRSTNAME, LASTNAME, BIRTHDATE, GENDER, COUNTRY, TOWN, ADDITIONAL, REGISTEREDSINCE) ")
                         .append(" VALUES (")
                         .append("'").append(user.getUserName()).append("',")
                         .append("'").append(user.getEmail()).append("',")
@@ -153,7 +158,8 @@ public class UserDB {
                         .append("'").append(user.getGender()).append("',")
                         .append("'").append(user.getCountry()).append("',")
                         .append("'").append(user.getTown()).append("',")
-                        .append("'").append(user.getInfo()).append("');");
+                        .append("'").append(user.getInfo()).append("',")
+                        .append("'").append(timestamp).append("');");
 
                 stmt.executeUpdate(insQuery.toString());
                 System.out.println("#DB: The member was successfully added in the database.");
@@ -254,7 +260,6 @@ public class UserDB {
      * Delete information for specific user
      *
      * @param userName
-     * @param email
      * @throws ClassNotFoundException
      */
     public static void deleteUser(String userName) throws ClassNotFoundException {
@@ -267,7 +272,7 @@ public class UserDB {
 
                 insQuery.append("DELETE FROM user ")
                         .append(" WHERE ")
-                        .append(" USERNAME = ").append("'").append(userName).append("';");
+                        .append(" userName = ").append("'").append(userName).append("';");
 
                 stmt.executeUpdate(insQuery.toString());
                 System.out.println("#DB: The member was successfully deleted from the database.");

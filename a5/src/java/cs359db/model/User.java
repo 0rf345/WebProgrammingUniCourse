@@ -5,11 +5,13 @@
  */
 package cs359db.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author papadako
  */
-public class User {
+public class User implements Serializable {
 
     private String userName;    // (unique)
     private String email;       // (unique)

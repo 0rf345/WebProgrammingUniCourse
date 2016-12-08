@@ -5,6 +5,7 @@
  */
 package cs359db;
 
+import cs359db.db.PhotosDB;
 import cs359db.db.UserDB;
 import cs359db.model.User;
 
@@ -44,9 +45,30 @@ public class ExampleAPI {
         turing.setEmail("gnirut@csd.uoc.gr");
         UserDB.updateUser(turing);
 
-        System.out.println("Added default user.\n"+UserDB.getUser("turing"));
+        System.out.println(UserDB.getUser("turing"));
 
-        UserDB.deleteUser("turing");
+        //UserDB.deleteUser("turing");
+        // Get 10 latest photos from all users
+        //System.out.println(PhotosDB.getPhotoIDs(10).size());
+        // Get 10 latest photos from user turing
+        System.out.println(PhotosDB.getPhotoIDs(1, "turing").size());
+        System.out.println(PhotosDB.getPhotoBlobWithID(1).toString());
+        // Get metadata of photo with id
+        //System.out.println(PhotosDB.getPhotoMetadataWithID(1).toString());
+        /*
+             //This is what you should do for the response in the servlet
+             response.setContentType("image/jpg");   // Use the appropriate type from the metadata
+
+             // Get the blob of the photo
+             byte[] imgData = PhotosDB.getPhotoBlobWithID(1);
+
+             // output with the help of outputStream
+             OutputStream os = response.getOutputStream(); 
+             os.write(imgData);
+             os.flush();
+             os.close();
+
+      */
 
     }
 }
