@@ -5,7 +5,7 @@ var ep= "</p>";
 var l = "<label>";
 var el= "</label>";
 var exclude = "";
-
+var username = "";
 
 /*
  * In order to facilitate an XSS attack I inputed a script in any of the fields
@@ -225,6 +225,7 @@ function showInfo() {
  */
 function loginPOST() {
     var usern = $("#usern").val();
+    username = usern;
     var userp = $("#userp").val();
     var xhr = new XMLHttpRequest();
     
@@ -239,9 +240,11 @@ function loginPOST() {
                 $("#form").append("<br><p ><h1 id='welcome'>You have successfully signed in!</h1></p>");
                 $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
                 <input type='button' value='Usernames' onclick='showUsers();' /> \
-                <form name=\"uploadForm\"> \
-                <input id=\"images\" type=\"file\" webkitdirectory mozdirectory directory name=\"myFiles\" \
-                onchange=\"TIV3285.loadImages();\" multiple/> \
+                <form method=\"post\" action=\"UploadAnImage\" enctype=\"multipart/form-data\">\
+                <input id=\"image\" type=\"file\" name=\"photo\" size=\"50\"/>\
+                <input type=\"hidden\" name=\"userName\" value=\"" +username+ "\" />\
+                <input type=\"hidden\" name=\"contentType\" value=\"" +"image/jpg"+ "\" />\
+                <input type=\"submit\" value=\"Upload\">\
                 </form> \
                 <button id=\"buttonShow\" onclick=\"TIV3285.showImages('list');\">Show me pictures</button></p>");
                 $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
@@ -654,4 +657,52 @@ function populateCountries(where) {
 "<option value='Zambia'>Zambia</option>"+
 "<option value='Zimbabwe'>Zimbabwe</option>"+
 "</select>"+ep);
+}
+
+/*
+ * Function for preparing the image for upload
+ */
+function uploadImage() {
+    var image;
+    image = document.getElementById("image").files;
+    if (image.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+    
+    var formData = new FormData();
+    var reader = new FileReader();
+    //file = document.getElementById('fileButton').files[0];
+
+
+    reader.onload = function() {
+       xhr = new XMLHttpRequest();
+       formData.append('file', image);
+       xhr.open('POST', 'UploadAnImage');
+       xhr.send(formData);
+
+    };
+
+    reader.readAsDataURL(image);
+    }
+/*
+    if (image.length === 0) {
+        //Don't do anything    
+    } else {
+        var title;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'UploadAnImage?');
+
+        xhr.onload = function () {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                //register.style.display = "none";
+                document.getElementById('ajaxContent').innerHTML = xhr.responseText;
+            } else if (xhr.status !== 200){
+                alert('Request failed. Returned status of ' + xhr.status);
+            }
+        };
+        
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        
+        title = EXIF.getTag(image, ImageDescription);
+        xhr.send("user=" + username + "&title=" + title +"&contentType=" + );
+        
+    }*/
 }
