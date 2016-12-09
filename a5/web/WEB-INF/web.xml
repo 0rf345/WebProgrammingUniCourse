@@ -16,6 +16,10 @@
         <servlet-name>UploadImage</servlet-name>
         <servlet-class>myservlets.UploadImage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadAnImage</servlet-name>
+        <servlet-class>myservlets.UploadAnImage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>UploadImage</servlet-name>
         <url-pattern>/UploadImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadAnImage</servlet-name>
+        <url-pattern>/UploadAnImage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
