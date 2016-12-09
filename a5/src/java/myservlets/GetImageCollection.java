@@ -77,9 +77,7 @@ public class GetImageCollection extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-        
+            throws ServletException, IOException {      
         String JSONobj = "";
         List<Integer> ids = new ArrayList();
         String user = request.getParameter("user");
