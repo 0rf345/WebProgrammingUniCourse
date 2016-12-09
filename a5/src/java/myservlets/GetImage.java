@@ -5,8 +5,14 @@
  */
 package myservlets;
 
+import static cs359db.db.PhotosDB.getPhotoBlobWithID;
+import static cs359db.db.PhotosDB.getPhotoMetadataWithID;
+import cs359db.model.Photo;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,7 +76,60 @@ public class GetImage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String idC  = request.getParameter("id");
+        String meta = request.getParameter("metadata"); 
+        int id = -1;
+        if(idC != null) {
+            id = Integer.parseInt(idC);
+        }
+        else {
+            System.err.println("No id parsed in the header for GetImage");
+        }
+        
+        
+        // Return metadata JSON object
+        if(meta.equals("true")) {
+            Photo photo = null;
+            
+            try {
+                photo = getPhotoMetadataWithID(id);
+            }catch (ClassNotFoundException ex) {
+                System.err.println(ex);
+            }
+            
+            // Respond
+            if(photo != null) {
+                response.setContentType("application/json");
+                PrintWriter out = response.getWriter();
+                out.print("{");
+                out.print("userName:\""+photo.getUserName()+"\"");
+                out.print(", title:\""+photo.getTitle()+"\"");
+                out.print(", date:\""+photo.getDate()+"\"");
+                out.print(", contentType:\""+photo.getContentType()+"\"");
+                out.print(", numberOfRatings:\""+photo.getNumberOfRatings()+"\"");
+                out.print("}");
+            }else {
+                System.err.println("getPhotoMetadataWithID returned null photo.");
+            }
+        }
+        // Return image blob
+        else {
+            byte[] blob = null;
+            
+            try {
+                blob = getPhotoBlobWithID(id);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(blob != null) {
+                PrintWriter out = response.getWriter();
+                out.print(Arrays.toString(blob));
+            }else{
+                System.err.println("Could not get blob for id: " + id);
+            }
+        }
     }
 
     /**
@@ -80,7 +139,7 @@ public class GetImage extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Returns blob of image or metadata of id image depending on the metadata flag.";
     }// </editor-fold>
 
 }
