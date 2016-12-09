@@ -5,12 +5,15 @@
  */
 package myservlets;
 
+import cs359db.db.PhotosDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -22,6 +25,11 @@ public class GetImageCollection extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
+     * 
+     * Returns the latest images for a specific user or from all the users
+     * depending on the header
+     * 
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -71,6 +79,36 @@ public class GetImageCollection extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        String JSONobj = "";
+        List<Integer> ids = new ArrayList();
+        String user = request.getParameter("user");
+        String maxC = request.getParameter("number");
+        
+        int number = 10;
+        if(maxC != null) {
+            number = Integer.parseInt(maxC);
+        }
+        
+        // Get the IDs of latest user photos, or overall photos
+        try{
+            if(user != null) {
+                ids = PhotosDB.getPhotoIDs(number, user);
+            }else{
+                ids = PhotosDB.getPhotoIDs(number);
+            }
+        }catch(Exception ex) {
+            System.err.println("Couldn't get photos at GetImageCollection.");
+        }
+        
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.print("[");
+        out.print("\""+ids.get(0)+"\"");
+        for(int i = 1; i < ids.size(); i++) {
+            out.print(", \""+ids.get(i)+"\"");
+        }
+        out.print("]");
     }
 
     /**
