@@ -308,7 +308,6 @@ public class NewServlet extends HttpServlet {
             String userp = request.getParameter("userp");
             User a;
             try{
-                System.err.println(UserDB.getUser("n0b0d1js2"));
                 a = UserDB.getUser(usern);
                 if(a.getUserName().equals("")) {
                     success = "3";
