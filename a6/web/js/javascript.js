@@ -397,9 +397,33 @@ function saveChanges() {
 
 /*
  * Creates a button for saving user info changes
+ * Also creates a button for deleting own account
  */
 function populateButton() {
     $("#logged").append("<input type='button' value='Save Changes' onclick='saveChanges();'/>");
+    $("#logged").append("<input type='button' value='Delete Account' onclick='deleteUser();'/>");
+}
+
+function deleteUser() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'deleteUser?doIt=yes');
+    
+    xhr.onload = function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //If 1 deletion was succesful
+            if(xhr.responseText === "1") {
+                location.reload();
+            } else {
+                //Something went wrong
+                $("#logged").append("<p>Couldn't delete user.</p>");            }
+            //document.getElementById('ajaxContent').innerHTML = xhr.responseText;
+        } else if (xhr.status !== 200){
+            alert('Request failed. Returned status of ' + xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.send();
 }
 
 /*
