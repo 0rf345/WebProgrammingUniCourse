@@ -98,7 +98,7 @@ public class deleteImage extends HttpServlet {
                 }
             }
         }
-        out.println(suc);
+        out.print(suc);
     }
 
     /**
