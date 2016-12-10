@@ -444,8 +444,8 @@ function deleteImage(id) {
                 document.getElementById("containerTIV").removeChild(document.getElementById(id));
             } else {
                 //Something went wrong
-                $("#logged").append("<p>Couldn't delete image.</p>");            }
-            //document.getElementById('ajaxContent').innerHTML = xhr.responseText;
+                $("#logged").append("<p>Couldn't delete image.</p>");            
+            }
         } else if (xhr.status !== 200){
             alert('Request failed. Returned status of ' + xhr.status);
         }
