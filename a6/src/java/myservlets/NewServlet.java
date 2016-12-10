@@ -363,7 +363,9 @@ public class NewServlet extends HttpServlet {
                     }else{
                         tmp = "Last logged in: " + this.track.get(a.getUserName());
                     }
+                    o.print("<div onclick=\"showThesePhotos("+a.getUserName()+"); >");
                     o.print("<li><a href=\"#\">"+a.getUserName()+"</a>+"+tmp+"</li>");
+                    o.print("</div>");
                 }
                 o.print("</ul>");
             }
