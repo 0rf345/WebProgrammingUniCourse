@@ -405,6 +405,10 @@ function populateButton() {
     $("#logged").append("<input type='button' value='Delete Account' onclick='deleteUser();'/>");
 }
 
+/**
+ * Function that sends a request so the user will get deleted
+ * @returns request will return 1 on success 0 on deletion
+ */
 function deleteUser() {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'deleteUser?doIt=yes');
@@ -425,6 +429,10 @@ function deleteUser() {
     
     xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     xhr.send();
+}
+
+function deleteImage() {
+    
 }
 
 /*
@@ -728,8 +736,8 @@ function getImage(id, boolean) {
                 reader.readAsDataURL(blob);
 
                 reader.onload = function() {
-                              base64data = reader.result;                
-                              console.log(base64data);
+                    base64data = reader.result;                
+                    console.log(base64data);
                 };
 
             }
