@@ -5,10 +5,12 @@
  */
 package myservlets;
 
+import cs359db.db.PhotosDB;
 import static cs359db.db.PhotosDB.getPhotoBlobWithID;
 import static cs359db.db.PhotosDB.getPhotoMetadataWithID;
 import cs359db.model.Photo;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -117,17 +119,18 @@ public class GetImage extends HttpServlet {
         }
         // Return image blob
         else {
-            byte[] blob = null;
+            byte[] imgData = null;
             
             try {
-                blob = getPhotoBlobWithID(id);
+                imgData = PhotosDB.getPhotoBlobWithID(id);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            System.err.println(Arrays.toString(blob));
+            System.err.println(Arrays.toString(imgData));
             
-            if(blob != null) {
+            if(imgData != null) {
+                /*
                 PrintWriter out = response.getWriter();
                 Blob blobb = null;
                 try {
@@ -136,6 +139,14 @@ public class GetImage extends HttpServlet {
                     Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 out.print(blob);
+                */
+                response.setContentType("image/jpg");
+                try (OutputStream os = response.getOutputStream()) {
+                    os.write(imgData);
+                    os.flush();
+                }catch (Exception ex) {
+                    System.err.println("Could not get outputstream.");
+                }
             }else{
                 System.err.println("Could not get blob for id: " + id);
             }
