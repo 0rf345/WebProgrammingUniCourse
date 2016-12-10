@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 /**
  *
@@ -123,9 +125,17 @@ public class GetImage extends HttpServlet {
                 Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            System.err.println(Arrays.toString(blob));
+            
             if(blob != null) {
                 PrintWriter out = response.getWriter();
-                out.print(Arrays.toString(blob));
+                Blob blobb = null;
+                try {
+                    blobb = new javax.sql.rowset.serial.SerialBlob(blob);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                out.print(blob);
             }else{
                 System.err.println("Could not get blob for id: " + id);
             }
