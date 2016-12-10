@@ -6,7 +6,6 @@
 package cs359db.db;
 
 import cs359db.model.Photo;
-import cs359db.model.User;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -62,7 +61,7 @@ public class PhotosDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return photos;
@@ -114,7 +113,7 @@ public class PhotosDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return photos;
@@ -164,7 +163,7 @@ public class PhotosDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return data;
@@ -210,7 +209,7 @@ public class PhotosDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return photo;
 
@@ -244,7 +243,7 @@ public class PhotosDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -329,7 +328,7 @@ public class PhotosDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotosDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return maxID;
     }

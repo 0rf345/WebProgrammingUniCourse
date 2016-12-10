@@ -67,7 +67,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return users;
@@ -116,7 +116,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return user;
@@ -135,7 +135,7 @@ public class UserDB {
 
         } catch (Exception ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             try (Connection con = CS359DB.getConnection();
@@ -172,7 +172,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -189,7 +189,7 @@ public class UserDB {
 
         } catch (Exception ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             try (Connection con = CS359DB.getConnection();
@@ -220,7 +220,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -252,7 +252,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -284,7 +284,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -316,7 +316,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return valid;
@@ -347,7 +347,7 @@ public class UserDB {
 
         } catch (SQLException ex) {
             // Log exception
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return valid;
