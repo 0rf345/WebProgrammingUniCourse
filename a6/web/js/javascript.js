@@ -476,7 +476,6 @@ function showThesePhotos(username_other) {
    //for showing other users' photos
    var xhr = new XMLHttpRequest();
     //Number of pictures that the user asked for, default is 10
-    var number = document.getElementById('number').value;
     xhr.open('POST', 'GetImageCollection?');
     
     xhr.onload = function () {
@@ -493,7 +492,7 @@ function showThesePhotos(username_other) {
     
     xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     //Just using the default value for number of images
-    xhr.send("user=" + username_other + "&number=" + number);
+    xhr.send("user=" + username_other);
 }
 
 /*
