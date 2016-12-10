@@ -246,7 +246,7 @@ function loginPOST() {
                 <input type=\"hidden\" name=\"contentType\" value=\"" +"image/jpg"+ "\" />\
                 <input type=\"submit\" value=\"Upload\">\
                 </form> \
-                <button id=\"buttonShow\" onclick=\"TIV3285.showImages('list');\">Show me pictures</button></p>");
+                <button id=\"buttonShow\" onclick=\"getImageCollection();\">Show Latest Images</button></p>");
                 $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
             }else if(xhr.responseText === "2") {
                 // Wrong Password
@@ -659,6 +659,56 @@ function populateCountries(where) {
 "</select>"+ep);
 }
 
+/**
+ * Sends a request to get the ids of latest images
+ * @returns ids of latest images
+ */
+function getImageCollection() {
+     var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'GetImageCollection?');
+    
+    xhr.onload = function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            var arrayID = JSON.parse(xhr.responseText);
+            document.getElementById('containerTIV').innerHTML = arrayID[0];
+            for (var i=0; i<arrayID.length ; i++) {
+            
+            }
+        } else if (xhr.status !== 200){
+            alert('Request failed. Returned status of ' + xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    //Just using the default value for number of images
+    xhr.send("user=" + username + "&number=" + 10);
+}
+
+/**
+ * Sends a request for a specific image with given id
+ * @returns image blob if metadata false otherwise returns the metadata of the image
+ */
+function getImage(id, boolean) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'GetImage?');
+    
+    xhr.onload = function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            var arrayID = JSON.parse(xhr.responseText);
+            document.getElementById('containerTIV').innerHTML = arrayID[0];
+            for (var i=0; i<arrayID.length ; i++) {
+            
+            }
+        } else if (xhr.status !== 200){
+            alert('Request failed. Returned status of ' + xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    //Just using the default value for number of images
+    xhr.send("image=" + id + "&metadata=" + boolean);
+}
+
 /*
  * Function for preparing the image for upload
  */
@@ -683,6 +733,7 @@ function uploadImage() {
     reader.readAsDataURL(image);
     }
 /*
+ * 
     if (image.length === 0) {
         //Don't do anything    
     } else {
