@@ -1,2 +1,22 @@
-We need to figure out working together using git and implement
-the photo functionality described as per the exercise.
+
+	We have successfully completed 1,2,3,4,5,6
+
+	The project should open fine on NetBeans.
+
+	Passwords are md5 hashed on the client and then again on servlet.
+	
+	On the server side we have also complete 8 but there was
+	not enough time to implement that on the front-end.
+
+	On the front-end the developer was Olympia Xanthaki
+	On the back-end the developer was Orfeas Kalipolitis
+
+	The base code for a5 and codeSprint was from Orfeas Kalipolitis repo.
+
+	This has been our show: "So in case we don't ever see you
+
+	Good morning.
+	Good afternoon.
+	And good night.
+	
+	"	 
