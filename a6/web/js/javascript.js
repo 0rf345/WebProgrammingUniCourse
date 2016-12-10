@@ -483,7 +483,7 @@ function showThesePhotos(username_other) {
             var arrayID = JSON.parse(xhr.responseText);
             for (var i=0; i<arrayID.length ; i++) {
                 //document.getElementById('containerTIV').innerHTML = arrayID[i] + "<br>";
-                getImage(arrayID[i], false);
+                getImage(arrayID[i], false, true);
             }
         } else if (xhr.status !== 200){
             alert('Request failed. Returned status of ' + xhr.status);
@@ -767,7 +767,7 @@ function getImageCollection() {
             var arrayID = JSON.parse(xhr.responseText);
             for (var i=0; i<arrayID.length ; i++) {
                 //document.getElementById('containerTIV').innerHTML = arrayID[i] + "<br>";
-                getImage(arrayID[i], false);
+                getImage(arrayID[i], false, false);
             }
         } else if (xhr.status !== 200){
             alert('Request failed. Returned status of ' + xhr.status);
@@ -784,8 +784,9 @@ function getImageCollection() {
  * @returns image blob if metadata false otherwise returns the metadata of the image
  * @parameter id is the id of the image
  * @parameter boolean is the value of return metadata
+ * @parameter if other_user true then another user is asking for the pictures and we shouldn't give them the option to delete images
  */
-function getImage(id, boolean) {
+function getImage(id, boolean, other_user) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'GetImage?');
     xhr.responseType = "blob";
@@ -819,9 +820,10 @@ function getImage(id, boolean) {
                     tile = document.createElement("div");
                     tile.className = "tile";
                     tile.id = id;
-                    tile.innerHTML = "<span onclick=\"deleteImage(" + tile.id +");\" class=\"delete\" title=\"delete button\">&times; </span>";
-                    //$("#userp").on("change", validatePassword);
-                    
+                    //Show delete option only to owner of photos
+                    if (!other_user) {
+                        tile.innerHTML = "<span onclick=\"deleteImage(" + tile.id +");\" class=\"delete\" title=\"delete button\">&times; </span>";
+                    }
                     //$("#20").on("click", enlargeImage(image.src, "enlarged-capsule"));
                     image.onclick = function() {enlargeImage(image.src, "enlarged-capsule");};
                     tile.insertBefore(image, tile.childNodes[0]);
