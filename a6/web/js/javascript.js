@@ -706,7 +706,7 @@ function getImageCollection() {
         if(xhr.readyState === 4 && xhr.status === 200) {
             var arrayID = JSON.parse(xhr.responseText);
             for (var i=0; i<arrayID.length ; i++) {
-                document.getElementById('containerTIV').innerHTML = arrayID[i] + "<br>";
+                //document.getElementById('containerTIV').innerHTML = arrayID[i] + "<br>";
                 getImage(arrayID[i], false);
             }
         } else if (xhr.status !== 200){
@@ -749,9 +749,19 @@ function getImage(id, boolean) {
 
                     // Use createObjectURL to make a URL for the blob
                     var image = new Image();
+                    var tile;
                     image.src = base64data;
                             //URL.createObjectURL(blob);
-                    document.body.appendChild(image);
+                    //image.className = "tile";
+                    //Create tile div and insert image on each
+                    tile = document.createElement("div");
+                    tile.className = "tile";
+                    tile.id = id;
+                    //$("#"+tile.id).on("click", enlargeImage(image.src, "enlarged-capsule"));
+                    //tile.onclick = function(){enlargeImage(image.src, "enlarged-capsule");};
+                    tile.insertBefore(image, tile.childNodes[0]);
+                    document.getElementById("containerTIV").appendChild(tile);
+                    //document.body.appendChild(image);
                 };
 
             }
@@ -766,6 +776,18 @@ function getImage(id, boolean) {
     //Just using the default value for number of images
     xhr.send("id=" + id + "&metadata=" + boolean);
 }
+
+function enlargeImage(imgsrc, element) {
+            //var file = loadedImages[index], capsule;
+            // Have to check that this is an image though 
+            //if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+            
+            var span = document.createElement('span');
+            span.innerHTML = ['<img id="enlarge" src="', imgsrc,'">',  '<div id="url">', imgsrc, '</div><p></p>'].join('');                reader = new FileReader();
+                capsule = document.getElementById(element);
+                capsule.style.display="block";
+            
+        }
 
 /*
  * Function for preparing the image for upload
@@ -790,6 +812,7 @@ function uploadImage() {
 
     reader.readAsDataURL(image);
     }
+
 /*
  * 
     if (image.length === 0) {
