@@ -240,7 +240,8 @@ function loginPOST() {
                 $("#form").append("<br><p ><h1 id='welcome'>You have successfully signed in!</h1></p>");
                 $("#form").append("<p><input type='button' value='MyInfo' onclick='showInfo();' />\
                 <input type='button' value='Usernames' onclick='showUsers();' /> \
-                <form method=\"post\" action=\"UploadAnImage\" enctype=\"multipart/form-data\">\
+                <iframe name=\"samepage\" style=\"display:none;\"></iframe>\
+                <form method=\"post\" action=\"UploadAnImage\" target=\"samepage\" enctype=\"multipart/form-data\" >\
                 <input id=\"image\" type=\"file\" name=\"photo\" size=\"50\"/>\
                 <input type=\"hidden\" name=\"userName\" value=\"" +username+ "\" />\
                 <input type=\"hidden\" name=\"contentType\" value=\"" +"image/jpg"+ "\" />\
