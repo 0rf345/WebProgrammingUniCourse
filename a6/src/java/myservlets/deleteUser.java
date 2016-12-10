@@ -5,10 +5,13 @@
  */
 package myservlets;
 
+import cs359db.db.PhotosDB;
 import cs359db.db.UserDB;
 import cs359db.model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -78,10 +81,16 @@ public class deleteUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String suc = "0";
+        
         try {
             HttpSession session = request.getSession();
             User user = UserDB.getUser(session.getAttribute("usern").toString());
             if(user.getUserName().equals(session.getAttribute("usern").toString())) {
+                List<Integer> ids;
+                ids = PhotosDB.getPhotoIDs(0, user.getUserName());
+                for(int i = 0; i < ids.size(); i++) {
+                    PhotosDB.deletePhoto(ids.get(i));
+                }
                 UserDB.deleteUser(user);
                 suc = "1";
             }
