@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -82,10 +83,13 @@ public class GetImageCollection extends HttpServlet {
         List<Integer> ids = new ArrayList();
         String user = request.getParameter("user");
         String maxC = request.getParameter("number");
+        HttpSession session = request.getSession();
         
         int number = 10;
         if(maxC != null) {
             number = Integer.parseInt(maxC);
+        }else if(session.getAttribute("number") != null) {
+            number = Integer.parseInt(session.getAttribute("number").toString());
         }
         
         // Get the IDs of latest user photos, or overall photos
