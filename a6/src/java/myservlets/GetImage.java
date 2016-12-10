@@ -8,7 +8,9 @@ package myservlets;
 import cs359db.db.PhotosDB;
 import static cs359db.db.PhotosDB.getPhotoBlobWithID;
 import static cs359db.db.PhotosDB.getPhotoMetadataWithID;
+import cs359db.db.RatingDB;
 import cs359db.model.Photo;
+import cs359db.model.Rating;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -111,7 +114,37 @@ public class GetImage extends HttpServlet {
                 out.print(", title:\""+photo.getTitle()+"\"");
                 out.print(", date:\""+photo.getDate()+"\"");
                 out.print(", contentType:\""+photo.getContentType()+"\"");
-                out.print(", numberOfRatings:\""+photo.getNumberOfRatings()+"\"");
+                int numOfR = 0;
+                int userR  = -1;
+                int total  = 0;
+                List<Rating> ratings = null;
+                try {
+                    ratings = RatingDB.getRatings(id);
+                    numOfR = ratings.size();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                if(ratings != null) {
+                    for(int i = 0; i < ratings.size(); i++) {
+                        if(ratings.get(i).getUserName().equals(photo.getUserName())) {
+                            userR = ratings.get(i).getRate();
+                        }
+                        total += ratings.get(i).getRate();
+                    }
+                }
+                
+                out.print(", numberOfRatings:\""+numOfR+"\"");
+                if(userR == -1) {
+                    out.print(", userRated:\"unrated\"");
+                }else{
+                    out.print(", userRated:\""+userR+"\"");
+                }
+                
+                if(numOfR != 0) {
+                    out.print(", averageScore:\""+(total/numOfR)+"\"");
+                }
+                
                 out.print("}");
             }else {
                 System.err.println("getPhotoMetadataWithID returned null photo.");
