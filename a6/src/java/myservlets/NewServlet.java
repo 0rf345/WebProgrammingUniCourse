@@ -26,6 +26,22 @@ import java.util.logging.Logger;
  */
 public class NewServlet extends HttpServlet {
 
+    String epochString = "1081157732";
+    long epoch = Long.parseLong( epochString );
+    Map<String,String> loggedIn;
+    Map<String,Date>   track;
+    
+    public NewServlet() throws ClassNotFoundException {
+        this.loggedIn = new HashMap<>();
+        this.track = new HashMap<>();
+        List<User> users = UserDB.getUsers();
+        for(int i = 0; i < users.size(); i++) {
+            loggedIn.put(users.get(i).getUserName(), "0");
+            track.put(users.get(i).getUserName(), new Date(epoch * 1000));
+        }
+        
+    }
+
     
     /**
      * Returns a String which is the MD5 hash of a
@@ -314,6 +330,8 @@ public class NewServlet extends HttpServlet {
                 } else if(a.getPassword().equals(hashMD5(userp))) {
                     success = "1";
                     session.setAttribute("usern", usern);
+                    this.loggedIn.put(usern, "1");
+                    this.track.put(usern, new Date(1000 * session.getLastAccessedTime()));
                 }else{
                     success = "2";
                 }
@@ -337,9 +355,15 @@ public class NewServlet extends HttpServlet {
                 o.print("<style>");
                 o.print("</style>");
                 o.print("<ul>");
-
+                String tmp = "";
+                
                 for ( User a : userList ) {
-                    o.print("<li><a href=\"#\">"+a.getUserName()+"</a></li>");
+                    if(this.loggedIn.get((a.getUserName())).equals("1")) {
+                        tmp = "Logged in right now.";
+                    }else{
+                        tmp = "Last logged in: " + this.track.get(a.getUserName());
+                    }
+                    o.print("<li><a href=\"#\">"+a.getUserName()+"</a>+"+tmp+"</li>");
                 }
                 o.print("</ul>");
             }
@@ -376,6 +400,11 @@ public class NewServlet extends HttpServlet {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(NewServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+        // Troubleshooting
+        }else if(request.getParameter("login").equals("7")){
+            this.loggedIn.put(session.getAttribute("usern").toString(), "0");
+            this.track.put(session.getAttribute("usern").toString(), new Date(1000 * session.getLastAccessedTime()));
+            session.invalidate();
         // Troubleshooting
         }else{
             response.setContentType("text/html"); 
