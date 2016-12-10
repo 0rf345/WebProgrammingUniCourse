@@ -5,13 +5,18 @@
  */
 package myservlets;
 
+import cs359db.db.UserDB;
+import cs359db.model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -72,7 +77,20 @@ public class deleteUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String suc = "0";
+        try {
+            HttpSession session = request.getSession();
+            User user = UserDB.getUser(session.getAttribute("usern").toString());
+            if(user.getUserName().equals(session.getAttribute("usern").toString())) {
+                UserDB.deleteUser(user);
+                suc = "1";
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(deleteUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        PrintWriter out = response.getWriter();
+        out.print(suc);
     }
 
     /**
