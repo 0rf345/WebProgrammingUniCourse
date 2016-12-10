@@ -5,13 +5,20 @@
  */
 package myservlets;
 
+import cs359db.db.RatingDB;
+import cs359db.model.Rating;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -72,7 +79,51 @@ public class giveRating extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Rating rating = new Rating();
+        HttpSession session = request.getSession();
+        String usern = session.getAttribute("usern").toString();
+        if(usern != null) {
+            String pIdC = request.getParameter("id");
+            String rateC= request.getParameter("rate");
+            if(rateC != null && pIdC != null) {
+                int pId = Integer.parseInt(pIdC);
+                int rate= Integer.parseInt(rateC);
+                String t= (new Date()).toString();
+                List<Rating> ratings = null;
+                try {
+                    ratings = RatingDB.getRatings();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(giveRating.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                int rId;
+                if(ratings == null || ratings.isEmpty()) {
+                    rId = 0;
+                }else{
+                    rId = ratings.get(ratings.size() - 1).getID() + 1;
+                }
+                
+                rating.setID(rId);
+                rating.setPhotoID(pId);
+                rating.setRate(rate);
+                rating.setUserName(usern);
+                rating.setTimestamp(t);
+                PrintWriter out = response.getWriter();
+                    
+                try {
+                    RatingDB.addRating(rating);
+                    out.print("1");
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(giveRating.class.getName()).log(Level.SEVERE, null, ex);
+                    out.print("0");
+                }
+                
+            }else{
+                System.err.println("rating or photo id was null");
+            }
+        }else{
+            System.err.println("User was not logged in when trying to rate.");
+        }
     }
 
     /**
