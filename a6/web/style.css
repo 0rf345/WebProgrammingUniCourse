@@ -1,0 +1,94 @@
+@import url(http://fonts.googleapis.com/css?family=Exo:100,200,400);
+
+body {
+    height: 100%;
+}
+
+#header {
+    margin-top: 5%; 
+    font-family: 'Exo', Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 40px;
+    text-align: center;
+    color: #F29E20;
+}
+
+#header span {
+    color: #A0A0FF;
+    font-size: 40px;
+    cursor: pointer;
+    transition: font-size 0.5s;
+}
+
+#header span:hover {
+    font-size: 42px;
+    color: blue;
+}
+
+#container{
+    position: relative;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#form {
+    margin: 0;
+}
+
+p { 
+    display: table-row;  
+}
+
+label { 
+    display: table-cell; 
+}
+	
+input { 
+    display: table-cell; 
+}
+
+select {
+    display: table-cell;
+}
+
+input:invalid {
+    border: 2px solid red;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ 
+li {
+  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+ 
+li:last-child {
+  border: none;
+}
+ 
+li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  width: 200px;
+ 
+  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+  transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+ 
+li a:hover {
+  font-size: 30px;
+  background: #f6f6f6;
+}
+
+input[type=button] {
+    cursor: pointer!important;
+}
