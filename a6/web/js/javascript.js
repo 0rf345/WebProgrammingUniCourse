@@ -466,9 +466,34 @@ function deleteImage(id) {
     xhr.send("id=" + id + "&usern=" + username);
 }
 
-function showThesePhotos(username) {
+/**
+ * For adding functionality of showing other peoples' photos
+ * @param {type} username_other Another user's username
+ * @returns {undefined}
+ */
+function showThesePhotos(username_other) {
     // same as get imageCollection
    //for showing other users' photos
+   var xhr = new XMLHttpRequest();
+    //Number of pictures that the user asked for, default is 10
+    var number = document.getElementById('number').value;
+    xhr.open('POST', 'GetImageCollection?');
+    
+    xhr.onload = function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            var arrayID = JSON.parse(xhr.responseText);
+            for (var i=0; i<arrayID.length ; i++) {
+                //document.getElementById('containerTIV').innerHTML = arrayID[i] + "<br>";
+                getImage(arrayID[i], false);
+            }
+        } else if (xhr.status !== 200){
+            alert('Request failed. Returned status of ' + xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    //Just using the default value for number of images
+    xhr.send("user=" + username_other + "&number=" + number);
 }
 
 /*
