@@ -466,6 +466,11 @@ function deleteImage(id) {
     xhr.send("id=" + id + "&usern=" + username);
 }
 
+function showThesePhotos(username) {
+    // same as get imageCollection
+   //for showing other users' photos
+}
+
 /*
  * Populates 'where' with a select form of countries.
  */
