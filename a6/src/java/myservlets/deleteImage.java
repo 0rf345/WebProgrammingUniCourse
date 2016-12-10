@@ -5,13 +5,17 @@
  */
 package myservlets;
 
+import cs359db.db.PhotosDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -72,7 +76,29 @@ public class deleteImage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String idC = request.getParameter("id");
+        String usern=request.getParameter("usern");
+        int id = -1;
+        if(idC != null) {
+            id = Integer.parseInt(idC);
+        }
+        else {
+            System.err.println("No id parsed in the header for deleteImage");
+        }
+        String suc = "0";
+        PrintWriter out = response.getWriter();
+        if(id != -1 && usern != null) {
+            if(usern.equals(session.getAttribute("usern").toString())) {
+                try {
+                    PhotosDB.deletePhoto(id);
+                    suc = "1";
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(deleteImage.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            out.println(suc);
+        }
     }
 
     /**
