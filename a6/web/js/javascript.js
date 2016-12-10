@@ -226,7 +226,8 @@ function showInfo() {
 function loginPOST() {
     var usern = $("#usern").val();
     username = usern;
-    var userp = $("#userp").val();
+    var userpp = $("#userp").val();
+    var userp = md5(userpp);
     var xhr = new XMLHttpRequest();
     
     xhr.open('POST', 'NewServlet?login=1&usern=' + usern + '&userp=' + userp);
@@ -274,7 +275,8 @@ function loginPOST() {
  */
 function registerPOST() {
     var usern   = $("#usern").val();
-    var userp   = $("#userp").val();
+    var userpp   = $("#userpp").val();
+    var userp = md5(userpp);
     var email   = $("#email").val();
     var fname   = $("#fname").val();
     var lname   = $("#lname").val();
@@ -726,18 +728,30 @@ function getImageCollection() {
 function getImage(id, boolean) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'GetImage?');
-    
+    xhr.responseType = "blob";
+
     xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200) {
             if( boolean === false ) {
-                var blob = xhr.responseText;
+                    
+                var blob = xhr.response;
                 var reader = new FileReader();
+                //xhr.responseType = "blob";
 
                 reader.readAsDataURL(blob);
 
                 reader.onload = function() {
-                    base64data = reader.result;                
+                    var base64data = reader.result;                
                     console.log(base64data);
+                    
+                    // Make a Blob from the bytes
+                    //var blob = new Blob([base64data], {type: 'image/jpg'});
+
+                    // Use createObjectURL to make a URL for the blob
+                    var image = new Image();
+                    image.src = base64data;
+                            //URL.createObjectURL(blob);
+                    document.body.appendChild(image);
                 };
 
             }
