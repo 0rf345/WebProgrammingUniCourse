@@ -97,8 +97,8 @@ public class deleteImage extends HttpServlet {
                     Logger.getLogger(deleteImage.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            out.println(suc);
         }
+        out.println(suc);
     }
 
     /**
