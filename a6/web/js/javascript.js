@@ -757,10 +757,15 @@ function getImage(id, boolean) {
                     tile = document.createElement("div");
                     tile.className = "tile";
                     tile.id = id;
-                    //$("#"+tile.id).on("click", enlargeImage(image.src, "enlarged-capsule"));
-                    //tile.onclick = function(){enlargeImage(image.src, "enlarged-capsule");};
+                    //$("#userp").on("change", validatePassword);
+                    
+                    //$("#20").on("click", enlargeImage(image.src, "enlarged-capsule"));
+                    tile.onclick = function() {enlargeImage(image.src, "enlarged-capsule");};
                     tile.insertBefore(image, tile.childNodes[0]);
                     document.getElementById("containerTIV").appendChild(tile);
+                    //var tmp = "enlargeImage(" + image.src +", \"enlarged-capsule\");";
+                   //$("#20").on("click", tmp);
+
                     //document.body.appendChild(image);
                 };
 
@@ -781,13 +786,16 @@ function enlargeImage(imgsrc, element) {
             //var file = loadedImages[index], capsule;
             // Have to check that this is an image though 
             //if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
-            
+            alert("In enlargeimage "+imgsrc);
             var span = document.createElement('span');
             span.innerHTML = ['<img id="enlarge" src="', imgsrc,'">',  '<div id="url">', imgsrc, '</div><p></p>'].join('');                reader = new FileReader();
-                capsule = document.getElementById(element);
-                capsule.style.display="block";
+            //document.getElementById(element).insertBefore(span, document.getElementById(element).childNodes[0]);    
+    
+            capsule = document.getElementById(element);
+            capsule.style.display="block";
+            capsule.insertBefore(span, capsule.childNodes[0]);
             
-        }
+}
 
 /*
  * Function for preparing the image for upload
