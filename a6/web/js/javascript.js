@@ -252,7 +252,7 @@ function loginPOST() {
                 $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
             }else if(xhr.responseText === "2") {
                 // Wrong Password
-                alert('Wrond username - password combination');
+                alert('Wrong username - password combination');
                 document.getElementById("usern").value = "";
                 document.getElementById("userp").value = "";
             }else if(xhr.responseText === "3") {
@@ -433,8 +433,26 @@ function deleteUser() {
     xhr.send();
 }
 
-function deleteImage() {
+function deleteImage(id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'deleteImage?');
     
+    xhr.onload = function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            //If 1 deletion was succesful
+            if(xhr.responseText === "1") {
+                document.getElementById("containerTIV").removeChild(document.getElementById(id));
+            } else {
+                //Something went wrong
+                $("#logged").append("<p>Couldn't delete image.</p>");            }
+            //document.getElementById('ajaxContent').innerHTML = xhr.responseText;
+        } else if (xhr.status !== 200){
+            alert('Request failed. Returned status of ' + xhr.status);
+        }
+    };
+    
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.send("id=" + id + "&usern=" + username);
 }
 
 /*
@@ -749,24 +767,24 @@ function getImage(id, boolean) {
 
                     // Use createObjectURL to make a URL for the blob
                     var image = new Image();
-                    var tile;
+                    var tile, span;
                     image.src = base64data;
                             //URL.createObjectURL(blob);
                     //image.className = "tile";
                     //Create tile div and insert image on each
+                    //<span e="deleteImage();"
+                    //class="delete" title="delete button">&times;</span>
                     tile = document.createElement("div");
                     tile.className = "tile";
                     tile.id = id;
+                    tile.innerHTML = "<span onclick=\"deleteImage(" + tile.id +");\" class=\"delete\" title=\"delete button\">&times; </span>";
                     //$("#userp").on("change", validatePassword);
                     
                     //$("#20").on("click", enlargeImage(image.src, "enlarged-capsule"));
-                    tile.onclick = function() {enlargeImage(image.src, "enlarged-capsule");};
+                    image.onclick = function() {enlargeImage(image.src, "enlarged-capsule");};
                     tile.insertBefore(image, tile.childNodes[0]);
                     document.getElementById("containerTIV").appendChild(tile);
-                    //var tmp = "enlargeImage(" + image.src +", \"enlarged-capsule\");";
-                   //$("#20").on("click", tmp);
-
-                    //document.body.appendChild(image);
+              
                 };
 
             }
@@ -783,18 +801,19 @@ function getImage(id, boolean) {
 }
 
 function enlargeImage(imgsrc, element) {
-            //var file = loadedImages[index], capsule;
-            // Have to check that this is an image though 
-            //if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
-            alert("In enlargeimage "+imgsrc);
-            var span = document.createElement('span');
-            span.innerHTML = ['<img id="enlarge" src="', imgsrc,'">',  '<div id="url">', imgsrc, '</div><p></p>'].join('');                reader = new FileReader();
-            //document.getElementById(element).insertBefore(span, document.getElementById(element).childNodes[0]);    
-    
-            capsule = document.getElementById(element);
-            capsule.style.display="block";
-            capsule.insertBefore(span, capsule.childNodes[0]);
-            
+        var capsule;
+        //var file = loadedImages[index], capsule;
+        // Have to check that this is an image though 
+        //if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+        alert("In enlargeimage "+imgsrc);
+        var span = document.createElement('span');
+        span.innerHTML = ['<img id="enlarge" src="', imgsrc,'">',  '<div id="url">', imgsrc, '</div><p></p>'].join('');                reader = new FileReader();
+        //document.getElementById(element).insertBefore(span, document.getElementById(element).childNodes[0]);    
+
+        capsule = document.getElementById(element);
+        capsule.style.display="block";
+        capsule.insertBefore(span, capsule.childNodes[0]);
+
 }
 
 /*

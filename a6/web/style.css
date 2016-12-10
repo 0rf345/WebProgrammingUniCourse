@@ -114,3 +114,40 @@ input[type=button] {
     width: 70%;
     max-width: 700px;
 }
+
+
+#url {
+    display: block;
+    margin: auto;
+    font-family: Proxima Nova,helvetica neue,helvetica,arial,sans-serif;    
+    color : #747272;
+    width: 60%;
+    max-width: 500px;
+    text-align: center; 
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#url:hover {
+    text-overflow: inherit;
+    overflow: visible;
+}
+
+.delete {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+    font-size: 30px;
+    color : white;
+}
+
+.delete:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.delete:hover > *{
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,1)
+
+}
