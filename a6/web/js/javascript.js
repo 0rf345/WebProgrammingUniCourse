@@ -175,6 +175,17 @@ function checkFields() {
     }
 }
 
+/**
+ * Activates when user clicks on show Images
+ * @returns {undefined}
+ */
+function showImages() {
+    if(!document.getElementById('number')) {
+    $("#form").append("No. of Images:<br><input id=\"number\" type=\"number\" min=\"1\" max=\"40\" value=\"10\"><br>\
+<input onclick=\"getImageCollection();\" type=\"submit\" value=\"Submit\">");
+    }
+}
+
 /*
  * Asks servlet for all registered users
  */
@@ -248,7 +259,7 @@ function loginPOST() {
                 <input type=\"hidden\" name=\"contentType\" value=\"" +"image/jpg"+ "\" />\
                 <input type=\"submit\" value=\"Upload\">\
                 </form> \
-                <button id=\"buttonShow\" onclick=\"getImageCollection();\">Show Latest Images</button></p>");
+                <button id=\"buttonShow\" onclick=\"showImages();\">Show Images</button></p>");
                 $("#header").append("<input type='button' value='Log Out' onclick='location.reload();' />");
             }else if(xhr.responseText === "2") {
                 // Wrong Password
@@ -717,7 +728,9 @@ function populateCountries(where) {
  * @returns ids of latest images
  */
 function getImageCollection() {
-     var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
+    //Number of pictures that the user asked for, default is 10
+    var number = document.getElementById('number').value;
     xhr.open('POST', 'GetImageCollection?');
     
     xhr.onload = function () {
@@ -734,7 +747,7 @@ function getImageCollection() {
     
     xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     //Just using the default value for number of images
-    xhr.send("user=" + username + "&number=" + 10);
+    xhr.send("user=" + username + "&number=" + number);
 }
 
 /**
