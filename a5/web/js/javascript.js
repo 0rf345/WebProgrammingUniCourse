@@ -670,9 +670,9 @@ function getImageCollection() {
     xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200) {
             var arrayID = JSON.parse(xhr.responseText);
-            document.getElementById('containerTIV').innerHTML = arrayID[0];
             for (var i=0; i<arrayID.length ; i++) {
-            
+                document.getElementById('containerTIV').innerHTML = arrayID[i] + "<br>";
+                getImage(arrayID[i], false);
             }
         } else if (xhr.status !== 200){
             alert('Request failed. Returned status of ' + xhr.status);
@@ -687,6 +687,8 @@ function getImageCollection() {
 /**
  * Sends a request for a specific image with given id
  * @returns image blob if metadata false otherwise returns the metadata of the image
+ * @parameter id is the id of the image
+ * @parameter boolean is the value of return metadata
  */
 function getImage(id, boolean) {
     var xhr = new XMLHttpRequest();
@@ -694,11 +696,20 @@ function getImage(id, boolean) {
     
     xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200) {
-            var arrayID = JSON.parse(xhr.responseText);
-            document.getElementById('containerTIV').innerHTML = arrayID[0];
-            for (var i=0; i<arrayID.length ; i++) {
-            
+            if( boolean === false ) {
+                var blob = xhr.responseText;
+                var reader = new FileReader();
+
+                reader.readAsDataURL(blob);
+
+                reader.onload = function() {
+                              base64data = reader.result;                
+                              console.log(base64data);
+                };
+
             }
+            //document.getElementById('containerTIV').innerHTML = arrayID[0];
+            
         } else if (xhr.status !== 200){
             alert('Request failed. Returned status of ' + xhr.status);
         }
@@ -706,7 +717,7 @@ function getImage(id, boolean) {
     
     xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     //Just using the default value for number of images
-    xhr.send("image=" + id + "&metadata=" + boolean);
+    xhr.send("id=" + id + "&metadata=" + boolean);
 }
 
 /*
