@@ -86,9 +86,11 @@ public class GetImageCollection extends HttpServlet {
         HttpSession session = request.getSession();
         
         int number = 10;
-        if(maxC != null) {
+        if(maxC != null && (!maxC.equals(""))) {
             number = Integer.parseInt(maxC);
-        }else if(session.getAttribute("number") != null) {
+        }
+        
+        if(session.getAttribute("number") != null) {
             number = Integer.parseInt(session.getAttribute("number").toString());
         }
         
